@@ -62,6 +62,9 @@ public class UserInterface {
                 case 9: //Remove vehicle
                     processRemoveVehicleRequest();
                     break;
+                case 10: //Sell/Lease a vehicle
+                    sellOrLeaseVehicleMenu();
+                    break;
                 case 0: //Exits
                     System.out.println("👋 Exiting...");
                     scanner.close();
@@ -311,6 +314,60 @@ public class UserInterface {
         }
     }
 
+    //sell or lease menu
+    private void sellOrLeaseVehicleMenu() {
+        System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━");
+        System.out.println("🚗 Buy or Lease Request");
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
+
+        System.out.println("Press [1]  ➤ Buy a vehicle");
+        System.out.println("Press [2]  ➤ Lease a vehicle");
+        System.out.println("Press [0]  ➤ Back to main menu");
+
+        System.out.print("👉 Enter your command: ");
+        int sellLeaseCommand = checkIntInput();
+
+        switch (sellLeaseCommand) {
+            case 1: //Sales Contract - buy car
+                processSalesContactRequest();
+                sellLeaseCommand = 0;
+            case 2: //Lease Contact - lease car
+                processLeaseContractRequest();
+                sellLeaseCommand = 0;
+            case 0: //Back to main menu
+                System.out.println("Going back to main menu");
+                break;
+            default:
+                System.out.println("⚠️ Invalid choice, please try again");
+
+        } while(sellLeaseCommand != 0);
+    }
+
+    //write up sales contract
+    private void processSalesContactRequest() {
+        System.out.println("\n━━━━━━━━━━━━━━━━━━");
+        System.out.println("📄 Sales Contract");
+        System.out.println("━━━━━━━━━━━━━━━━━━");
+
+        System.out.println("✨ You will be prompted to provide the VIN of the vehicle you'd like to purchase,");
+        System.out.println("✨ and to choose whether you'd like to finance it. 🚗💰");
+
+        System.out.print("👉 Enter VIN: ");
+        int vin = checkIntInput();
+
+        System.out.println("The Vehicle you have chosen is shown below:");
+
+
+
+    }
+
+    private void processLeaseContractRequest() {
+        System.out.println("\n━━━━━━━━━━━━━━━━━━");
+        System.out.println("📄 Lease Contract");
+        System.out.println("━━━━━━━━━━━━━━━━━━");
+
+    }
+
 
     //helper method to print vehicles in array list
     private static void displayVehicles(ArrayList<Vehicle> vehicles) {
@@ -335,8 +392,11 @@ public class UserInterface {
         System.out.println("🛻 Press [7] ➤ Get ALL vehicles");
         System.out.println("➕ Press [8] ➤ Add vehicle");
         System.out.println("➖ Press [9] ➤ Remove vehicle");
+        System.out.println("➖ Press [10] ➤ Buy/Lease vehicle");
         System.out.println("🏁 Press [0] ➤ Exit");
     }
+
+
 
 
     /* Check input validations */
