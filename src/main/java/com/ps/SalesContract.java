@@ -4,22 +4,22 @@ public class SalesContract extends Contract{
     private double salesTax;
     private int recordingFee;
     private int processingFee;
-    private boolean isFinance;
+    private boolean isFinanced;
 
     //constructor
-    public SalesContract(String date, String customerName, String customerEmail, String vehicleSold, double totalPrice, double monthlyPayment, int processingFee, boolean isFinance) {
-        super(date, customerName, customerEmail, vehicleSold, totalPrice, monthlyPayment);
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
+        super(date, customerName, customerEmail, vehicleSold);
         this.salesTax = 0.05;
         this.recordingFee = 100;
 
-        if(totalPrice < 10_000) {
+        if(vehicleSold.getPrice() < 10_000) {
             this.processingFee = 295;
         }
         else {
             this.processingFee = 495;
         }
 
-        this.isFinance = isFinance;
+        this.isFinanced = isFinanced;
     }
 
 
@@ -41,7 +41,7 @@ public class SalesContract extends Contract{
     @Override
     public double getMonthlyPayment() {
         //check if finance --> loan option
-        if(!isFinance) {
+        if(!isFinanced) {
             return 0;
         }
 
@@ -85,8 +85,8 @@ public class SalesContract extends Contract{
         return processingFee;
     }
 
-    public boolean isFinance() {
-        return isFinance;
+    public boolean isFinanced() {
+        return isFinanced;
     }
 
     //setters
@@ -102,7 +102,7 @@ public class SalesContract extends Contract{
         this.processingFee = processingFee;
     }
 
-    public void setFinance(boolean finance) {
-        isFinance = finance;
+    public void setFinanced(boolean financed) {
+        isFinanced = financed;
     }
 }

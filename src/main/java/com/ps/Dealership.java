@@ -118,6 +118,23 @@ public class Dealership {
         return filteredVehicles;
     }
 
+    //get vehicles by vin
+    public Vehicle getVehicleByVin(int vin) {
+        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
+
+        for(Vehicle vehicle: inventory) {
+            int vehicleVin = vehicle.getVin();
+            //add vehicle if within range
+            if( vehicleVin == vin) {
+                return vehicle;
+            }
+        }
+
+        return null;
+    }
+
+
+
 
     //return vehicles list
     public ArrayList<Vehicle> getAllVehicles() {

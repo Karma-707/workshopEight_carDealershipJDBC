@@ -3,6 +3,7 @@ package com.ps;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -320,9 +321,9 @@ public class UserInterface {
         System.out.println("🚗 Buy or Lease Request");
         System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
 
-        System.out.println("Press [1]  ➤ Buy a vehicle");
-        System.out.println("Press [2]  ➤ Lease a vehicle");
-        System.out.println("Press [0]  ➤ Back to main menu");
+        System.out.println("🚗 Press [1]  ➤ Buy a vehicle");
+        System.out.println("🏠 Press [2]  ➤ Lease a vehicle");
+        System.out.println("🔙 Press [0]  ➤ Back to main menu");
 
         System.out.print("👉 Enter your command: ");
         int sellLeaseCommand = checkIntInput();
@@ -330,17 +331,16 @@ public class UserInterface {
         switch (sellLeaseCommand) {
             case 1: //Sales Contract - buy car
                 processSalesContactRequest();
-                sellLeaseCommand = 0;
+                break;
             case 2: //Lease Contact - lease car
                 processLeaseContractRequest();
-                sellLeaseCommand = 0;
+                break;
             case 0: //Back to main menu
                 System.out.println("Going back to main menu");
                 break;
             default:
                 System.out.println("⚠️ Invalid choice, please try again");
-
-        } while(sellLeaseCommand != 0);
+        }
     }
 
     //write up sales contract
@@ -349,14 +349,58 @@ public class UserInterface {
         System.out.println("📄 Sales Contract");
         System.out.println("━━━━━━━━━━━━━━━━━━");
 
-        System.out.println("✨ You will be prompted to provide the VIN of the vehicle you'd like to purchase,");
-        System.out.println("✨ and to choose whether you'd like to finance it. 🚗💰");
+//        System.out.println("✨ You will be prompted to provide the VIN of the vehicle you'd like to purchase,");
+//        System.out.println("✨ and to choose whether you'd like to finance it. 🚗💰");
+
+        System.out.print("👉 Enter Your Name: ");
+        String customerName = checkStringInput();
+
+        System.out.print("👉 Enter Email: ");
+        String customerEmail = checkStringInput();
 
         System.out.print("👉 Enter VIN: ");
         int vin = checkIntInput();
 
-        System.out.println("The Vehicle you have chosen is shown below:");
+        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
 
+        //display vehicles filtered by vin
+        if(foundVehicle == null) {
+            System.out.println("📭 No vehicles found in that VIN");
+            return; //exit out of method
+        }
+        else {
+            System.out.println("🚗 You've chosen the following vehicle:");
+            System.out.println(foundVehicle);
+        }
+
+        System.out.print("💰 Would you like to finance this vehicle? (Yes/No): ");
+        boolean isFinanced = checkYesOrNoInput();
+
+        //format current date
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formattedDate = currentDate.format(formatter);
+
+        //create sales contract
+        SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
+
+
+        //TODO: contract file manager & display to user
+        ContractDataManager.saveContract(salesContract);
+
+
+        System.out.println("Successfully purchased - check paper work");
+
+        //TODO: print receipt
+        System.out.println(); //print receipt
+
+        //remove vehicle after purchase
+        dealership.removeVehicle(foundVehicle);
+
+        /* pay all the fees up front SALES
+        * divide monthly - fees
+        *
+        * */
 
 
     }
@@ -400,6 +444,22 @@ public class UserInterface {
 
 
     /* Check input validations */
+    //validate only yes or no option
+    public static boolean checkYesOrNoInput() {
+        while (true) {
+            String userInput = scanner.nextLine().trim().toLowerCase();
+
+            if(userInput.equals("yes") || userInput.equals("y")) {
+                return true;
+            }
+            else if(userInput.equals("no") || userInput.equals("n")) {
+                return false;
+            }
+            else {
+                System.out.print("⚠️ Invalid input, try again: ");
+            }
+        }
+    }
 
     //validate int input - data type
     private static int checkIntInput() {
