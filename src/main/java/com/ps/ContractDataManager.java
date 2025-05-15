@@ -19,10 +19,10 @@ public class ContractDataManager {
                     isFinanced = "YES";
                 }
                 else {
-                    isFinanced = "No";
+                    isFinanced = "NO";
                 }
 
-                String firstLine = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%f|%f|%d|%d|%f|%s|%f\n",
+                String firstLine = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f\n",
                         salesContract.getDate(),
                         salesContract.getCustomerName(),
                         salesContract.getCustomerEmail(),

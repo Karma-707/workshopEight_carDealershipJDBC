@@ -2,8 +2,8 @@ package com.ps;
 
 public class SalesContract extends Contract{
     private double salesTax;
-    private int recordingFee;
-    private int processingFee;
+    private double recordingFee;
+    private double processingFee;
     private boolean isFinanced;
 
     //constructor
@@ -31,8 +31,8 @@ public class SalesContract extends Contract{
         * */
         //TODO: fix the function, find base price; is that in vehicles? - made them static
         double totalPrice = 0;
-//        double basePrice = Vehicle.getPrice();
-//        totalPrice = basePrice + (basePrice * this.salesTax) + this.recordingFee + this.processingFee;
+        double basePrice = getVehicleChosen().getPrice();
+        totalPrice = basePrice + (basePrice * this.salesTax) + this.recordingFee + this.processingFee;
 
         return totalPrice;
     }
@@ -87,11 +87,11 @@ public class SalesContract extends Contract{
         return salesTax;
     }
 
-    public int getRecordingFee() {
+    public double getRecordingFee() {
         return recordingFee;
     }
 
-    public int getProcessingFee() {
+    public double getProcessingFee() {
         return processingFee;
     }
 

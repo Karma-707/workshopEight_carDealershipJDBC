@@ -396,6 +396,7 @@ public class UserInterface {
 
         //remove vehicle after purchase
         dealership.removeVehicle(foundVehicle);
+        DealershipFileManager.saveDealership(dealership);
 
         /* pay all the fees up front SALES
         * divide monthly - fees
