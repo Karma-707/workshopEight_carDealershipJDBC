@@ -8,53 +8,86 @@ import java.util.ArrayList;
 public class ContractDataManager {
     public static void saveContract(Contract contract) {
 
-        if(contract instanceof SalesContract) {
-            //TODO: write to sales contract file
+        if(contract instanceof SalesContract salesContract) {
+            Vehicle chosenVehicle = salesContract.getVehicleChosen();
+
+            //write to sales contract file
             try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("contracts.csv"));
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("contracts.csv", true));
+                String isFinanced;
+                if(salesContract.isFinanced()) {
+                    isFinanced = "YES";
+                }
+                else {
+                    isFinanced = "No";
+                }
 
-                String firstLine = String.format("SALE|%s|%s|%s\n",
-                        contract.getDate(),
-                        contract.getCustomerName(),
-                        contract.getCustomerEmail(),
-                        contract.getVehicleChosen().getVin(),
-                        contract.getVehicleChosen().getYear(),
-                        contract.getVehicleChosen().getMake(),
-                        contract.getVehicleChosen().getModel(),
-                        contract.getVehicleChosen().getVehicleType(),
-                        contract.getVehicleChosen().getColor(),
-                        contract.getVehicleChosen().getOdometer(),
-                        contract.getVehicleChosen().getPrice(),
-                        ((SalesContract) contract).getSalesTax()
-
-
+                String firstLine = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%f|%f|%d|%d|%f|%s|%f\n",
+                        salesContract.getDate(),
+                        salesContract.getCustomerName(),
+                        salesContract.getCustomerEmail(),
+                        chosenVehicle.getVin(),
+                        chosenVehicle.getYear(),
+                        chosenVehicle.getMake(),
+                        chosenVehicle.getModel(),
+                        chosenVehicle.getVehicleType(),
+                        chosenVehicle.getColor(),
+                        chosenVehicle.getOdometer(),
+                        chosenVehicle.getPrice(),
+                        salesContract.calcSalesTax(),
+                        salesContract.getRecordingFee(),
+                        salesContract.getProcessingFee(),
+                        salesContract.getTotalPrice(),
+                        isFinanced,
+                        salesContract.getMonthlyPayment()
                 );
                 bufferedWriter.write(firstLine);
-
-                ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
-
-                for(Vehicle vehicle: vehicles) {
-                    String vehicleLine = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n",
-                            vehicle.getVin(),
-                            vehicle.getYear(),
-                            vehicle.getMake(),
-                            vehicle.getModel(),
-                            vehicle.getVehicleType(),
-                            vehicle.getColor(),
-                            vehicle.getOdometer(),
-                            vehicle.getPrice()
-                    );
-                    bufferedWriter.write(vehicleLine);
-                }
 
                 bufferedWriter.close();
             } catch (IOException e) {
                 UserInterface.writeErrorsToLogsFile(e);
             }
         }
-        else if (contract instanceof LeaseContract) {
+        else if (contract instanceof LeaseContract leaseContract) {
             //TODO: write to lease contract file
-
+//            Vehicle chosenVehicle = salesContract.getVehicleChosen();
+//
+//            //write to lease contract file
+//            try {
+//                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("contracts.csv", true));
+//                String isFinanced;
+//                if(salesContract.isFinanced()) {
+//                    isFinanced = "YES";
+//                }
+//                else {
+//                    isFinanced = "No";
+//                }
+//
+//                String firstLine = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%f|%f|%d|%d|%f|%s|%f\n",
+//                        salesContract.getDate(),
+//                        salesContract.getCustomerName(),
+//                        salesContract.getCustomerEmail(),
+//                        chosenVehicle.getVin(),
+//                        chosenVehicle.getYear(),
+//                        chosenVehicle.getMake(),
+//                        chosenVehicle.getModel(),
+//                        chosenVehicle.getVehicleType(),
+//                        chosenVehicle.getColor(),
+//                        chosenVehicle.getOdometer(),
+//                        chosenVehicle.getPrice(),
+//                        salesContract.calcSalesTax(),
+//                        salesContract.getRecordingFee(),
+//                        salesContract.getProcessingFee(),
+//                        salesContract.getTotalPrice(),
+//                        isFinanced,
+//                        salesContract.getMonthlyPayment()
+//                );
+//                bufferedWriter.write(firstLine);
+//
+//                bufferedWriter.close();
+//            } catch (IOException e) {
+//                UserInterface.writeErrorsToLogsFile(e);
+//            }
         }
 
 

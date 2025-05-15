@@ -72,6 +72,16 @@ public class SalesContract extends Contract{
         return monthlyPayment;
     }
 
+
+    //calculate sales tax
+    public double calcSalesTax() {
+        Vehicle vehicle = getVehicleChosen();
+        double vehiclePrice = vehicle.getPrice();
+        return vehiclePrice * 0.05;
+    }
+
+
+
     //getters
     public double getSalesTax() {
         return salesTax;
