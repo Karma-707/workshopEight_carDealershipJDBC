@@ -365,7 +365,7 @@ public class UserInterface {
 
         //display vehicles filtered by vin
         if(foundVehicle == null) {
-            System.out.println("📭 No vehicles found in that VIN");
+            System.out.println("📭 No vehicles found with that VIN");
             return; //exit out of method
         }
         else {
@@ -384,10 +384,8 @@ public class UserInterface {
         //create sales contract
         SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
 
-
         //TODO: contract file manager & display to user
         ContractDataManager.saveContract(salesContract);
-
 
         System.out.println("Successfully purchased - check paper work");
 
@@ -402,14 +400,42 @@ public class UserInterface {
         * divide monthly - fees
         *
         * */
-
-
     }
 
     private void processLeaseContractRequest() {
         System.out.println("\n━━━━━━━━━━━━━━━━━━");
         System.out.println("📄 Lease Contract");
         System.out.println("━━━━━━━━━━━━━━━━━━");
+
+        System.out.print("👉 Enter Your Name: ");
+        String customerName = checkStringInput();
+
+        System.out.print("👉 Enter Email: ");
+        String customerEmail = checkStringInput();
+
+        System.out.print("👉 Enter VIN: ");
+        int vin = checkIntInput();
+
+        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
+
+        //display vehicles filtered by vin
+        if(foundVehicle == null) {
+            System.out.println("📭 No vehicles found with that VIN");
+            return; //exit out of method
+        }
+        else {
+            System.out.println("🚗 You've chosen the following vehicle:");
+            System.out.println(foundVehicle);
+        }
+
+        //format current date
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formattedDate = currentDate.format(formatter);
+
+        //create lease contract
+        LeaseContract leaseContract = new LeaseContract(formattedDate, customerName, customerEmail, foundVehicle);
+
 
     }
 

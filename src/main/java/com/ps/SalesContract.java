@@ -7,12 +7,12 @@ public class SalesContract extends Contract{
     private boolean isFinanced;
 
     //constructor
-    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
-        super(date, customerName, customerEmail, vehicleSold);
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen, boolean isFinanced) {
+        super(date, customerName, customerEmail, vehicleChosen);
         this.salesTax = 0.05;
         this.recordingFee = 100;
 
-        if(vehicleSold.getPrice() < 10_000) {
+        if(vehicleChosen.getPrice() < 10_000) {
             this.processingFee = 295;
         }
         else {
@@ -29,10 +29,8 @@ public class SalesContract extends Contract{
         /* total price formula
         * Total Price = base price + (base price * sales tax) + recording fee + processing fee
         * */
-        //TODO: fix the function, find base price; is that in vehicles? - made them static
-        double totalPrice = 0;
         double basePrice = getVehicleChosen().getPrice();
-        totalPrice = basePrice + (basePrice * this.salesTax) + this.recordingFee + this.processingFee;
+        double totalPrice = basePrice + (basePrice * this.salesTax) + this.recordingFee + this.processingFee;
 
         return totalPrice;
     }
@@ -52,11 +50,12 @@ public class SalesContract extends Contract{
         * r = Monthly interest rate (annual rate divided by 12)
         * n = Total number of payments (loan term in months)
         * */
-        double principal = getTotalPrice(); //total price of vehicles
+
+        double principal = getTotalPrice(); //total price of vehicle
         double interestRate = 0; //annual loan rate
         int months = 0; //loan term in months
-        double monthlyPayment = 0; //monthly payment
-        double monthlyInterestRate = 0; //monthly interest rate
+//        double monthlyPayment = 0; //monthly payment
+//        double monthlyInterestRate = 0; //monthly interest rate
 
         if(principal >= 10_000) {
             interestRate = 4.25 / 100; //change to decimal
@@ -66,10 +65,10 @@ public class SalesContract extends Contract{
             interestRate = 5.25 / 100; //change to decimal
             months = 24;
         }
-        monthlyInterestRate = interestRate / 12;
-        monthlyPayment = principal * ( monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months) / ( Math.pow(1 + monthlyInterestRate, months) - 1) );
+//        monthlyInterestRate = interestRate / 12;
+//        monthlyPayment = principal * ( monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months) / ( Math.pow(1 + monthlyInterestRate, months) - 1) );
 
-        return monthlyPayment;
+        return Contract.calcMonthlyPayment(principal, interestRate, months);
     }
 
 
