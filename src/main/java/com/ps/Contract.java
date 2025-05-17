@@ -38,7 +38,7 @@ public abstract class Contract {
 //            months = 24;
 //        }
         monthlyInterestRate = interestRate / 12;
-        monthlyPayment = principal * ( monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months) / ( Math.pow(1 + monthlyInterestRate, months) - 1) );
+        monthlyPayment = principal * ( (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / ( Math.pow(1 + monthlyInterestRate, months) - 1) );
 
         return monthlyPayment;
     }

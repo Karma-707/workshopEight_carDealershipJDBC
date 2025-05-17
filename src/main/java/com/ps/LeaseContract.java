@@ -17,7 +17,7 @@ public class LeaseContract extends Contract{
          * Total Price = base price + lease fee - expected ending value
          * */
         double basePrice = getVehicleChosen().getPrice();
-        double totalPrice = basePrice + this.leaseFee - this.expectedEndingValue;
+        double totalPrice = (basePrice - this.expectedEndingValue) + this.leaseFee;
 
         return totalPrice;
     }
@@ -29,7 +29,9 @@ public class LeaseContract extends Contract{
         * All leases are financed at 4.0% for 36 months
         * */
 
+//        double principal = getVehicleChosen().getPrice(); //total price of vehicle
         double principal = getTotalPrice(); //total price of vehicle
+//        double principal = getExpectedEndingValue(); //lease only expected value
         double interestRate = 4.0 / 100;
         int months = 36;
 

@@ -384,22 +384,17 @@ public class UserInterface {
         //create sales contract
         SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
 
-        //TODO: contract file manager & display to user
-        ContractDataManager.saveContract(salesContract);
+        //save to contracts.csv
+        ContractFileManager.saveContract(salesContract);
 
         System.out.println("Successfully purchased - check paper work");
 
-        //TODO: print receipt
+        //TODO: print receipt to user
         System.out.println(); //print receipt
 
         //remove vehicle after purchase
         dealership.removeVehicle(foundVehicle);
         DealershipFileManager.saveDealership(dealership);
-
-        /* pay all the fees up front SALES
-        * divide monthly - fees
-        *
-        * */
     }
 
     private void processLeaseContractRequest() {
@@ -436,7 +431,14 @@ public class UserInterface {
         //create lease contract
         LeaseContract leaseContract = new LeaseContract(formattedDate, customerName, customerEmail, foundVehicle);
 
+        //save to contracts.csv
+        ContractFileManager.saveContract(leaseContract);
 
+        System.out.println("Successfully purchased - check paper work");
+
+        //remove vehicle after purchase
+        dealership.removeVehicle(foundVehicle);
+        DealershipFileManager.saveDealership(dealership);
     }
 
 
