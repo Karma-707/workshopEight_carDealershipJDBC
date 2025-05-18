@@ -287,9 +287,9 @@ public class UserInterface {
 
     //remove vehicles to csv and dealership list
     private void processRemoveVehicleRequest() {
-        System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━");
+        System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━━━");
         System.out.println("➖ Vehicle Remove Request");
-        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━");
         System.out.print("👉 Enter VIN: ");
         int vin = checkIntInput();
 
@@ -328,19 +328,22 @@ public class UserInterface {
         System.out.print("👉 Enter your command: ");
         int sellLeaseCommand = checkIntInput();
 
-        switch (sellLeaseCommand) {
-            case 1: //Sales Contract - buy car
-                processSalesContactRequest();
-                break;
-            case 2: //Lease Contact - lease car
-                processLeaseContractRequest();
-                break;
-            case 0: //Back to main menu
-                System.out.println("Going back to main menu");
-                break;
-            default:
-                System.out.println("⚠️ Invalid choice, please try again");
-        }
+        do {
+            switch (sellLeaseCommand) {
+                case 1: //Sales Contract - buy car
+                    processSalesContactRequest();
+                    return;
+                case 2: //Lease Contact - lease car
+                    processLeaseContractRequest();
+                    return;
+                case 0: //Back to main menu
+                    System.out.println("Going back to main menu");
+                    return;
+                default:
+                    System.out.print("⚠️ Invalid choice, please try again: ");
+                    sellLeaseCommand = checkIntInput();
+            }
+        } while(sellLeaseCommand != 0);
     }
 
     //write up sales contract
@@ -388,15 +391,15 @@ public class UserInterface {
         ContractFileManager.saveContract(salesContract);
 
         System.out.println("Successfully purchased - check paper work");
-
-        //TODO: print receipt to user
-        System.out.println(); //print receipt
+        //print receipt to user
+        printReceipt(salesContract, foundVehicle);
 
         //remove vehicle after purchase
         dealership.removeVehicle(foundVehicle);
         DealershipFileManager.saveDealership(dealership);
     }
 
+    //write up lease contract
     private void processLeaseContractRequest() {
         System.out.println("\n━━━━━━━━━━━━━━━━━━");
         System.out.println("📄 Lease Contract");
@@ -436,6 +439,9 @@ public class UserInterface {
 
         System.out.println("Successfully purchased - check paper work");
 
+        //print receipt to user
+        printReceipt(leaseContract, foundVehicle);
+
         //remove vehicle after purchase
         dealership.removeVehicle(foundVehicle);
         DealershipFileManager.saveDealership(dealership);
@@ -469,6 +475,123 @@ public class UserInterface {
         System.out.println("🏁 Press [0] ➤ Exit");
     }
 
+    //print receipt of sale purchase/lease
+    private void printReceipt(Contract contract, Vehicle foundVehicle) {
+        if(contract instanceof SalesContract salesContract) {
+            String isFinanced;
+            if(salesContract.isFinanced()) {
+                isFinanced = "YES";
+            }
+            else {
+                isFinanced = "NO";
+            }
+
+            String firstLine = String.format(
+                    "\n━━━━━━━━━━━━━━━━\n" +
+                    "🧾 SALE RECEIPT\n" +
+                    "━━━━━━━━━━━━━━━━\n" +
+                    "📅 Date:          %s\n" +
+                    "👤 Customer:      %s\n" +
+                    "📧 Email:         %s\n\n" +
+
+                    "🚗 Vehicle Details:\n" +
+                    "   🔢 VIN:         %d\n" +
+                    "   📆 Year:        %d\n" +
+                    "   🏷️ Make:        %s\n" +
+                    "   🚘 Model:       %s\n" +
+                    "   🚙 Type:        %s\n" +
+                    "   🎨 Color:       %s\n" +
+                    "   🛣️ Odometer:    %,d miles\n" +
+                    "   💵 Price:       $%.2f\n\n" +
+
+                    "📋 Fees & Taxes:\n" +
+                    "   🧾 Sales Tax:   $%.2f\n" +
+                    "   📋 Rec. Fee:    $%.2f\n" +
+                    "   📦 Proc. Fee:   $%.2f\n\n" +
+
+                    "💰 Total Price:   $%.2f\n" +
+                    "💳 Financed:      %s\n" +
+                    "📆 Monthly Pmt:   $%.2f\n" +
+                    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+                    "✅ Thank you for your purchase!\n",
+                    salesContract.getDate(),
+                    salesContract.getCustomerName(),
+                    salesContract.getCustomerEmail(),
+
+                    foundVehicle.getVin(),
+                    foundVehicle.getYear(),
+                    foundVehicle.getMake(),
+                    foundVehicle.getModel(),
+                    foundVehicle.getVehicleType(),
+                    foundVehicle.getColor(),
+                    foundVehicle.getOdometer(),
+                    foundVehicle.getPrice(),
+
+                    salesContract.calcSalesTax(),
+                    salesContract.getRecordingFee(),
+                    salesContract.getProcessingFee(),
+
+                    salesContract.getTotalPrice(),
+                    isFinanced,
+                    salesContract.getMonthlyPayment()
+            );
+
+            System.out.println(firstLine);
+
+        }
+        else if (contract instanceof LeaseContract leaseContract) {
+
+            String firstLine = String.format(
+                    "\n━━━━━━━━━━━━━━━━━\n" +
+                    "📄 LEASE RECEIPT\n" +
+                    "━━━━━━━━━━━━━━━━━\n" +
+                    "📅 Date:          %s\n" +
+                    "👤 Customer:      %s\n" +
+                    "📧 Email:         %s\n\n" +
+
+                    "🚗 Vehicle Details:\n" +
+                    "   🔢 VIN:         %d\n" +
+                    "   📆 Year:        %d\n" +
+                    "   🏷️ Make:        %s\n" +
+                    "   🚘 Model:       %s\n" +
+                    "   🚙 Type:        %s\n" +
+                    "   🎨 Color:       %s\n" +
+                    "   🛣️ Odometer:    %,d miles\n" +
+                    "   💵 Price:       $%.2f\n\n" +
+
+                    "📋 Lease Details:\n" +
+                    "   📉 End Value:   $%.2f\n" +
+                    "   📦 Lease Fee:   $%.2f\n\n" +
+
+                    "💰 Total Price:   $%.2f\n" +
+                    "📆 Monthly Pmt:   $%.2f\n" +
+                    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+                    "✅ Thank you for leasing with us!\n",
+
+                    leaseContract.getDate(),
+                    leaseContract.getCustomerName(),
+                    leaseContract.getCustomerEmail(),
+
+                    foundVehicle.getVin(),
+                    foundVehicle.getYear(),
+                    foundVehicle.getMake(),
+                    foundVehicle.getModel(),
+                    foundVehicle.getVehicleType(),
+                    foundVehicle.getColor(),
+                    foundVehicle.getOdometer(),
+                    foundVehicle.getPrice(),
+
+                    leaseContract.getExpectedEndingValue(),
+                    leaseContract.getLeaseFee(),
+
+                    leaseContract.getTotalPrice(),
+                    leaseContract.getMonthlyPayment()
+            );
+            System.out.println(firstLine);
+
+
+        }
+    }
 
 
 
@@ -515,6 +638,8 @@ public class UserInterface {
 
         }
     }
+
+    //TODO: maybe add a method for string only separate from string with anything even numbers
 
     //validate string input not empty
     public static String checkStringInput() {
