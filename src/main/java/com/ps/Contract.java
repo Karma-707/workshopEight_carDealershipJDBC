@@ -23,20 +23,9 @@ public abstract class Contract {
          * n = Total number of payments (loan term in months)
          * */
 
-//        double interestRate; //annual loan rate
-//        int months; //loan term in months
         double monthlyPayment; //monthly payment
         double monthlyInterestRate; //monthly interest rate
 
-//
-//        if(principal >= 10_000) {
-//            interestRate = 4.25 / 100; //change to decimal
-//            months = 48;
-//        }
-//        else {
-//            interestRate = 5.25 / 100; //change to decimal
-//            months = 24;
-//        }
         monthlyInterestRate = interestRate / 12;
         monthlyPayment = principal * ( (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / ( Math.pow(1 + monthlyInterestRate, months) - 1) );
 

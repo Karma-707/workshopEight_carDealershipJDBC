@@ -29,9 +29,7 @@ public class LeaseContract extends Contract{
         * All leases are financed at 4.0% for 36 months
         * */
 
-//        double principal = getVehicleChosen().getPrice(); //total price of vehicle
         double principal = getTotalPrice(); //total price of vehicle
-//        double principal = getExpectedEndingValue(); //lease only expected value
         double interestRate = 4.0 / 100;
         int months = 36;
 

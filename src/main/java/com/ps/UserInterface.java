@@ -352,9 +352,6 @@ public class UserInterface {
         System.out.println("📄 Sales Contract");
         System.out.println("━━━━━━━━━━━━━━━━━━");
 
-//        System.out.println("✨ You will be prompted to provide the VIN of the vehicle you'd like to purchase,");
-//        System.out.println("✨ and to choose whether you'd like to finance it. 🚗💰");
-
         System.out.print("👉 Enter Your Name: ");
         String customerName = checkStringInput();
 
@@ -390,7 +387,6 @@ public class UserInterface {
         //save to contracts.csv
         ContractFileManager.saveContract(salesContract);
 
-//        System.out.println("Successfully purchased - check paper work");
         //print receipt to user
         printReceipt(salesContract, foundVehicle);
 
@@ -436,8 +432,6 @@ public class UserInterface {
 
         //save to contracts.csv
         ContractFileManager.saveContract(leaseContract);
-
-//        System.out.println("Successfully purchased - check paper work");
 
         //print receipt to user
         printReceipt(leaseContract, foundVehicle);
