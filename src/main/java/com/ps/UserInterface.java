@@ -390,7 +390,7 @@ public class UserInterface {
         //save to contracts.csv
         ContractFileManager.saveContract(salesContract);
 
-        System.out.println("Successfully purchased - check paper work");
+//        System.out.println("Successfully purchased - check paper work");
         //print receipt to user
         printReceipt(salesContract, foundVehicle);
 
@@ -437,7 +437,7 @@ public class UserInterface {
         //save to contracts.csv
         ContractFileManager.saveContract(leaseContract);
 
-        System.out.println("Successfully purchased - check paper work");
+//        System.out.println("Successfully purchased - check paper work");
 
         //print receipt to user
         printReceipt(leaseContract, foundVehicle);

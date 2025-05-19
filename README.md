@@ -1,6 +1,10 @@
 # 🚗🛻🚙 Vehicle Dealership Management System
 
-Welcome to the **Vehicle Dealership Management System**! This project allows the user to manage a vehicle inventory for a dealership. It provides a command-line interface (CLI) for performing various operations on the list of vehicles, such as filtering vehicles based on attributes, adding new vehicles, or removing existing ones.
+Welcome to the **Vehicle Dealership Management System**! 
+This project allows the user to manage a vehicle inventory for a dealership.
+A console-based Java application that simulates a full vehicle dealership management system. 
+It supports inventory operations, contract processing, receipt generation, error logging, and an interactive user interface.
+
 
 ![Home Screen](/images/homeScreen.png)
 
@@ -8,32 +12,31 @@ Welcome to the **Vehicle Dealership Management System**! This project allows the
 
 ## ✨ Features
 
-- 💰 **Filter by Price**
-  - Allows the user to filter vehicles within a specific price range.
+### 📄 Contract System
+- Create and save **Sales** or **Lease** contracts.
+- Automatically removes vehicles from inventory after a transaction.
+- Sales contracts support financing options.
+- Contracts are saved to a `contracts.csv` file.
 
-- 🏷️ **Filter by Make and Model**
-  - Enables the user to filter vehicles by their make and model.
+### 🧾 Receipt Generation
+- Console-formatted, professional-style receipts with emojis.
+- Clear breakdown of vehicle and transaction details.
+- Displays taxes, fees, financing, and monthly payments.
 
-- 📅 **Filter by Year**
-  - Lets the user search for vehicles within a specified year range.
+### 🔍 Inventory Search & Filter
+- Search vehicles by:
+  - 💰 Price range
+  - 🏷️ Make and Model
+  - 📅 Year range
+  - 🎨 Color
+  - 🛣️ Mileage range
+  - 🚘 Vehicle type (Car, Truck, SUV, Van)
 
-- 🎨 **Filter by Color**
-  - Enables the user to filter vehicles by their color.
+### 🛠️ Inventory Management
+- Add or remove vehicles via console prompts.
+- Changes are saved to `vehicles.csv`.
+- Displays all vehicles currently available in the dealership's inventory.
 
-- 🛣️ **Filter by Mileage**
-  - Lets the user filter vehicles based on their mileage.
-
-- 🚘 **Filter by Vehicle Type**
-  - Provides an option to filter vehicles by their type (e.g., Car, Truck, SUV, Van).
-
-- 📋 **Display All Vehicles**
-  - Displays all vehicles currently available in the dealership's inventory.
-
-- ➕ **Add a Vehicle**
-  - Lets the user add a new vehicle to the inventory.
-
-- ➖**Remove a Vehicle**
-  - Allows the user to remove a vehicle from the dealership's inventory.
 
 ### Filtering Screenshots
 
@@ -83,6 +86,18 @@ Removing Vehicle
 
 ![Remove Vehicle Result](/images/removeVehicleResult.png)
 
+Buying Vehicle
+
+![Sales Contract](/images/salesContract.png)
+
+![Sales Receipt](/images/salesReceipt.png)
+
+Leasing Vehicle
+
+![Leasing Contract](/images/leaseContract.png)
+
+![Leasing Receipt](/images/leaseReceipt.png)
+
 ---
 
 ## 🗂️ File List
@@ -94,6 +109,10 @@ Removing Vehicle
 | `Vehicle.java`               | Represents a single vehicle in the dealership's inventory.                        | - Stores vehicle details (VIN, year, make, model, etc.).<br>- Contains a `toString` method to display vehicle details.                                                                         |
 | `DealershipFileManager.java` | Manages loading and saving the dealership's vehicle inventory from/to a CSV file. | - Loads vehicles from a CSV file.<br>- Saves inventory to CSV after updates.<br>- Ensures data persistence.                                                                                    |
 | `exceptions.log`             | A log file to track any errors or exceptions that occur during program execution. | - Timestamps errors.<br>- Logs exception messages to help diagnose issues.                                                                                                                     |
+| `Contract.java`              | Abstract base class representing a sales or lease contract.                       | - Defines shared contract fields like customer name, date, and vehicle.<br>- Provides common functionality for child contract types.                                                           |
+| `ContractFileManager.java`   | Handles reading and writing contract data to a persistent storage file.           | - Saves contract details to a CSV file (e.g., `contracts.csv`).<br>- Supports both sales and lease contract serialization.                                                                     |
+| `LeaseContract.java`         | Represents a lease agreement for a vehicle.                                       | - Calculates expected monthly payments.<br>- Includes lease-specific fields such as lease term and rate.                                                                                       |
+| `SalesContract.java`         | Represents a finalized contract for a vehicle purchase.                           | - Calculates total cost including fees and sales tax.<br>- Stores details like finance option and down payment.                                                                                |
 
 ---
 
@@ -115,32 +134,87 @@ Time of occurrence: 2025-05-11 14:30:12 Invalid input: -1 for mileage
 
 ---
 
-# 🔥 Cool Code Highlight: Dynamic Vehicle Filtering
+# 🔥 Cool Code Highlight: Dynamic Contract Saving
 
-The `processGetByMakeModelRequest()` method demonstrates a smart and user-friendly way to filter vehicles based on flexible input (make, model, or both):
+The `saveContract()` method in ContractFileManager is a great example of clean and scalable code. 
+It dynamically detects whether a contract is a sales or lease contract and writes the appropriate data to a shared file (`contracts.csv`).
+
+This design uses polymorphism, Java’s instanceof pattern matching, and structured CSV formatting — making it both powerful and easy to extend in the future.
+
 
 ````
-System.out.print("👉 Enter Make: ");
-String make = scanner.nextLine();
-System.out.print("👉 Enter Model: ");
-String model = scanner.nextLine();
+if(contract instanceof SalesContract salesContract) {
+    Vehicle chosenVehicle = salesContract.getVehicleChosen();
 
-ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByMakeModel(make, model);
+    //write to sales contract file
+    try {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("contracts.csv", true));
+        String isFinanced;
+        if(salesContract.isFinanced()) {
+            isFinanced = "YES";
+        }
+        else {
+            isFinanced = "NO";
+        }
 
-if(make.isEmpty() && model.isEmpty()) {
-    System.out.println("❌ Oops! You left both the make and model blank. 🛠️ Please enter at least one to filter vehicles.");
+        String firstLine = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f\n",
+                salesContract.getDate(),
+                salesContract.getCustomerName(),
+                salesContract.getCustomerEmail(),
+                chosenVehicle.getVin(),
+                chosenVehicle.getYear(),
+                chosenVehicle.getMake(),
+                chosenVehicle.getModel(),
+                chosenVehicle.getVehicleType(),
+                chosenVehicle.getColor(),
+                chosenVehicle.getOdometer(),
+                chosenVehicle.getPrice(),
+                salesContract.calcSalesTax(),
+                salesContract.getRecordingFee(),
+                salesContract.getProcessingFee(),
+                salesContract.getTotalPrice(),
+                isFinanced,
+                salesContract.getMonthlyPayment()
+        );
+        bufferedWriter.write(firstLine);
+
+        bufferedWriter.close();
+    } catch (IOException e) {
+        UserInterface.writeErrorsToLogsFile(e);
+    }
 }
-else if (!make.isEmpty() && model.isEmpty()) {
-    System.out.println("\n🔍 Displaying Filtered Make Range");
-    ...
-}
-else if (make.isEmpty() && !model.isEmpty()) {
-    System.out.println("\n🔍 Displaying Filtered Model Range");
-    ...
-}
-else {
-    System.out.println("\n🔍 Displaying Filtered Make & Model Range");
-}
+else if (contract instanceof LeaseContract leaseContract) {
+    //TODO: write to lease contract file
+    Vehicle chosenVehicle = leaseContract.getVehicleChosen();
+
+    //write to lease contract file
+    try {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("contracts.csv", true));
+
+        String firstLine = String.format("LEASE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f\n",
+                leaseContract.getDate(),
+                leaseContract.getCustomerName(),
+                leaseContract.getCustomerEmail(),
+                chosenVehicle.getVin(),
+                chosenVehicle.getYear(),
+                chosenVehicle.getMake(),
+                chosenVehicle.getModel(),
+                chosenVehicle.getVehicleType(),
+                chosenVehicle.getColor(),
+                chosenVehicle.getOdometer(),
+                chosenVehicle.getPrice(),
+                leaseContract.getExpectedEndingValue(),
+                leaseContract.getLeaseFee(),
+                leaseContract.getTotalPrice(),
+                leaseContract.getMonthlyPayment()
+        );
+        bufferedWriter.write(firstLine);
+
+        bufferedWriter.close();
+    } catch (IOException e) {
+        UserInterface.writeErrorsToLogsFile(e);
+    }
+
 
 ````
 ---
@@ -160,6 +234,6 @@ Use this code at your own risk. The developers are not responsible for any data 
 # 🧑‍💻 Author
 💻 Developed by: Meixin Zhang
 
-📅 Date: May 11th, 2025
+📅 Date: May 18th, 2025
 
 Created with ❤️ using Java.
