@@ -1,6 +1,8 @@
-package com.ps;
+package com.ps.core.contract;
 
-public class LeaseContract extends Contract{
+import com.ps.core.Vehicle;
+
+public class LeaseContract extends Contract {
     private double expectedEndingValue;
     private double leaseFee;
 

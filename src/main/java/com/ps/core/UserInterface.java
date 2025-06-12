@@ -1,4 +1,10 @@
-package com.ps;
+package com.ps.core;
+
+import com.ps.ContractFileManager;
+import com.ps.DealershipFileManager;
+import com.ps.core.contract.Contract;
+import com.ps.core.contract.LeaseContract;
+import com.ps.core.contract.SalesContract;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

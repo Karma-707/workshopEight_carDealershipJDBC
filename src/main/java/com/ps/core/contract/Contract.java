@@ -1,4 +1,6 @@
-package com.ps;
+package com.ps.core.contract;
+
+import com.ps.core.Vehicle;
 
 public abstract class Contract {
     private String date;

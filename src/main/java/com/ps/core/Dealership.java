@@ -1,8 +1,6 @@
-package com.ps;
+package com.ps.core;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Dealership {
     private String name;

@@ -1,4 +1,4 @@
-package com.ps;
+package com.ps.core;
 
 public class Vehicle {
     private int vin;

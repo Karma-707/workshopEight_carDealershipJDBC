@@ -1,5 +1,9 @@
 package com.ps;
 
+import com.ps.core.UserInterface;
+import com.ps.core.Vehicle;
+import com.ps.core.Dealership;
+
 import java.io.*;
 import java.util.ArrayList;
 

@@ -1,6 +1,8 @@
-package com.ps;
+package com.ps.core.contract;
 
-public class SalesContract extends Contract{
+import com.ps.core.Vehicle;
+
+public class SalesContract extends Contract {
     private double salesTax;
     private double recordingFee;
     private double processingFee;
