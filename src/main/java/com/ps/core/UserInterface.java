@@ -5,7 +5,9 @@ import com.ps.DealershipFileManager;
 import com.ps.core.contract.Contract;
 import com.ps.core.contract.LeaseContract;
 import com.ps.core.contract.SalesContract;
+import com.ps.dao.DealershipDAO;
 
+import javax.sql.DataSource;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,20 +20,33 @@ import java.util.Scanner;
 public class UserInterface {
     private Dealership dealership;
     static Scanner scanner = new Scanner(System.in);
+    private DataSource dataSource;
+    private DealershipDAO dealershipDAO;
 
     private void init() {
         //load dealership details
-        this.dealership = DealershipFileManager.getDealership();
+//        this.dealership = DealershipFileManager.getDealership();
+        this.dealershipDAO = new DealershipDAO(dataSource);
     }
 
     //Constructor
-    public UserInterface() {
+    public UserInterface(DataSource dataSource) {
         init();
+        //load dataSource to userInterface
+        this.dataSource =  dataSource;
+        initDb();
+    }
+
+
+    //using dataSource grab all to DAOs
+    private void initDb() {
+
     }
 
     //Display all
     public void display() {
         clearLogsFile();
+
         int mainMenuCommand;
 
         do {

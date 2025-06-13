@@ -20,7 +20,7 @@ public class DealershipFileManager {
             String address = dealershipDetails[1];
             String phone = dealershipDetails[2];
 
-            Dealership dealership = new Dealership(name, address, phone);
+            Dealership dealership = new Dealership( 1, name, address, phone);
 
             //Read all the vehicles starting on line 2
             while((input = bufferedReader.readLine()) != null) {
