@@ -13,7 +13,14 @@ public class LeaseContract extends Contract {
     private double leaseFee;
 
     //constructor
-    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen, LocalDate leaseStart, LocalDate leaseEnd) {
+    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen) {
+        super(date, customerName, customerEmail, vehicleChosen);
+        this.expectedEndingValue = vehicleChosen.getPrice() * 0.5;
+        this.leaseFee = vehicleChosen.getPrice() * 0.07;
+    }
+
+    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen,
+                         LocalDate leaseStart, LocalDate leaseEnd) {
         super(date, customerName, customerEmail, vehicleChosen);
         this.leaseStart = leaseStart;
         this.leaseEnd = leaseEnd;
@@ -37,6 +44,16 @@ public class LeaseContract extends Contract {
         this.monthlyPayment = monthlyPayment;
     }
 
+    public LeaseContract(int leaseContractId, String customerName, String customerEmail, Vehicle vehicleChosen,
+                         LocalDate leaseStart, LocalDate leaseEnd) {
+        super(String.valueOf(leaseStart), customerName, customerEmail, vehicleChosen);
+        this.leaseStart = leaseStart;
+        this.leaseEnd = leaseEnd;
+
+        this.expectedEndingValue = vehicleChosen.getPrice() * 0.5;
+        this.leaseFee = vehicleChosen.getPrice() * 0.07;
+        this.monthlyPayment = getMonthlyPayment();
+    }
 
 
 

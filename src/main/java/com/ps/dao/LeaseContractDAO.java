@@ -78,7 +78,7 @@ public class LeaseContractDAO {
     }
 
     public void create(LeaseContract leaseContract) {
-        String query = "INSERT INTO leasecontracts (LeaseContractID, Vin, LeaseName, CustomerEmail, LeaseStart, LeaseEnd, ExpectedEndingValue, LeaseFee, MonthlyPayment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO leasecontracts (Vin, LeaseName, CustomerEmail, LeaseStart, LeaseEnd, ExpectedEndingValue, LeaseFee, MonthlyPayment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 //        String query = "INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, CustomerEmail, LeaseEnd) VALUES (?, ?, ?, ?, ?);";
 
         try (
@@ -86,15 +86,15 @@ public class LeaseContractDAO {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
         )
         {
-            preparedStatement.setInt(1, leaseContract.getLeaseContractId());
-            preparedStatement.setString(2, leaseContract.getVehicleChosen().getVin());
-            preparedStatement.setString(3, leaseContract.getCustomerName());
-            preparedStatement.setString(4, leaseContract.getCustomerEmail());
-            preparedStatement.setDate(5, Date.valueOf(leaseContract.getLeaseStart()));
-            preparedStatement.setDate(6, Date.valueOf(leaseContract.getLeaseEnd()));
-            preparedStatement.setDouble(7, leaseContract.getExpectedEndingValue());
-            preparedStatement.setDouble(8, leaseContract.getLeaseFee());
-            preparedStatement.setDouble(9, leaseContract.getMonthlyPayment());
+//            preparedStatement.setInt(1, leaseContract.getLeaseContractId());
+            preparedStatement.setString(1, leaseContract.getVehicleChosen().getVin());
+            preparedStatement.setString(2, leaseContract.getCustomerName());
+            preparedStatement.setString(3, leaseContract.getCustomerEmail());
+            preparedStatement.setDate(4, Date.valueOf(leaseContract.getLeaseStart()));
+            preparedStatement.setDate(5, Date.valueOf(leaseContract.getLeaseEnd()));
+            preparedStatement.setDouble(6, leaseContract.getExpectedEndingValue());
+            preparedStatement.setDouble(7, leaseContract.getLeaseFee());
+            preparedStatement.setDouble(8, leaseContract.getMonthlyPayment());
 
             int rows = preparedStatement.executeUpdate();
 

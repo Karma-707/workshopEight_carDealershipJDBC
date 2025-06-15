@@ -1,6 +1,7 @@
 package com.ps.dao;
 
 import com.ps.core.Dealership;
+import com.ps.core.Vehicle;
 
 import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.sql.DataSource;
@@ -21,6 +22,11 @@ public class DealershipDAO {
     public DealershipDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+
+
+
+
 
     //CRUD methods
     public List<Dealership> getAll() {

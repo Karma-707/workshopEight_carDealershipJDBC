@@ -22,6 +22,36 @@ public class VehiclesDAO {
         this.dataSource = dataSource;
     }
 
+
+    //filter by price
+    public List<Vehicle> getVehiclesByPrice(double min, double max) {
+        List<Vehicle> filteredVehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE Price BETWEEN ? AND ?;";
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setDouble(1, min);
+            preparedStatement.setDouble(2, max);
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery()
+                )
+            {
+                while (resultSet.next()) {
+                    filteredVehicles.add(vehicleParser(resultSet));
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return filteredVehicles;
+    }
+
     //CRUD methods
     public List<Vehicle> getAll() {
         List<Vehicle> vehicles = new ArrayList<>();
@@ -62,7 +92,7 @@ public class VehiclesDAO {
 
             try (
                     ResultSet resultSet = preparedStatement.executeQuery();
-            )
+                )
             {
                 if(resultSet.next()) {
                     return vehicleParser(resultSet);

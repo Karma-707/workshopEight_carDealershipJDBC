@@ -11,10 +11,12 @@ import javax.sql.DataSource;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -111,7 +113,8 @@ public class UserInterface {
         System.out.print("👉 Enter Maximum Price: ");
         double maxPrice = checkDoubleInput();
 
-        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(minPrice, maxPrice);
+//        List<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(minPrice, maxPrice);
+        List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByPrice(minPrice, maxPrice);
 
         //display vehicles filtered by price
         if(filteredVehicles.isEmpty()) {
@@ -430,9 +433,10 @@ public class UserInterface {
         String customerEmail = checkStringInput();
 
         System.out.print("👉 Enter VIN: ");
-        int vin = checkIntInput();
+        String vin = checkStringInput();
 
-        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
+//        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
+        Vehicle foundVehicle = vehiclesDAO.getByVin(vin);
 
         //display vehicles filtered by vin
         if(foundVehicle == null) {
@@ -447,25 +451,39 @@ public class UserInterface {
         //format current date
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String formattedDate = currentDate.format(formatter);
+        String formattedStartDate = currentDate.format(formatter);
+
+        System.out.print("👉 Enter Lease End Date (YYYYMMDD): ");
+        String leaseEndInput = checkStringInput();
+        LocalDate leaseEndDate = LocalDate.parse(leaseEndInput);
+        String formattedEndDate = leaseEndDate.format(formatter);
+
 
         //create lease contract
-        LeaseContract leaseContract = new LeaseContract(formattedDate, customerName, customerEmail, foundVehicle);
+//        LeaseContract leaseContract = new LeaseContract(formattedDate, customerName, customerEmail, foundVehicle);
+        LeaseContract leaseContractToCreate = new LeaseContract(0, customerName, customerEmail, foundVehicle,
+                Date.valueOf(formattedStartDate).toLocalDate(), Date.valueOf(formattedEndDate).toLocalDate());
 
-        //save to contracts.csv
-        ContractFileManager.saveContract(leaseContract);
+
+        //save to DB
+//        ContractFileManager.saveContract(leaseContract);
+        leaseContractDAO.create(leaseContractToCreate);
+
 
         //print receipt to user
-        printReceipt(leaseContract, foundVehicle);
+        printReceipt(leaseContractToCreate, foundVehicle);
 
         //remove vehicle after purchase
-        dealership.removeVehicle(foundVehicle);
-        DealershipFileManager.saveDealership(dealership);
+//        dealership.removeVehicle(foundVehicle);
+//        DealershipFileManager.saveDealership(dealership);
+        vehiclesDAO.delete(foundVehicle.getVin());
+        System.out.println("✅ Lease contract saved and vehicle removed from inventory.");
+
     }
 
 
     //helper method to print vehicles in array list
-    private static void displayVehicles(ArrayList<Vehicle> vehicles) {
+    private static void displayVehicles(List<Vehicle> vehicles) {
         for(Vehicle vehicle: vehicles) {
             System.out.print(vehicle);
         }
