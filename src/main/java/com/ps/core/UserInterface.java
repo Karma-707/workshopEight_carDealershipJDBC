@@ -404,9 +404,10 @@ public class UserInterface {
         String customerEmail = checkStringInput();
 
         System.out.print("👉 Enter VIN: ");
-        int vin = checkIntInput();
+        String vin = checkStringInput();
 
-        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
+//        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
+        Vehicle foundVehicle = vehiclesDAO.getByVin(vin);
 
         //display vehicles filtered by vin
         if(foundVehicle == null) {
@@ -427,17 +428,22 @@ public class UserInterface {
         String formattedDate = currentDate.format(formatter);
 
         //create sales contract
+//        SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
         SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
 
-        //save to contracts.csv
-        ContractFileManager.saveContract(salesContract);
+
+        //save to db
+//        ContractFileManager.saveContract(salesContract);
+        salesContractDAO.create(salesContract);
 
         //print receipt to user
         printReceipt(salesContract, foundVehicle);
 
         //remove vehicle after purchase
-        dealership.removeVehicle(foundVehicle);
-        DealershipFileManager.saveDealership(dealership);
+//        dealership.removeVehicle(foundVehicle);
+//        DealershipFileManager.saveDealership(dealership);
+        vehiclesDAO.delete(vin);
+        System.out.println("✅ Sales contract completed and vehicle removed from inventory.");
     }
 
     //write up lease contract

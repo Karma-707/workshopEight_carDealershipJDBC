@@ -42,6 +42,11 @@ public class SalesContract extends Contract {
         this.isFinanced = isFinanced;
     }
 
+
+
+
+
+
     //get total price
     @Override
     public double getTotalPrice() {
