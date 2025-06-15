@@ -247,7 +247,9 @@ public class UserInterface {
         System.out.print("👉 Enter Maximum Mileage: ");
         double maxMileage = checkDoubleInput();
 
-        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByMileage(minMileage, maxMileage);
+//        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByMileage(minMileage, maxMileage);
+        List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByMileage(minMileage, maxMileage);
+
 
         //display vehicles filtered by mileage range
         if(filteredVehicles.isEmpty()) {

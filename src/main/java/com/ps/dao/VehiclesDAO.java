@@ -156,6 +156,33 @@ public class VehiclesDAO {
         return filteredVehicles;
     }
 
+    //filter by mileage
+    public List<Vehicle> getVehiclesByMileage(double min, double max) {
+        List<Vehicle> filteredVehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE Odometer BETWEEN ? AND ?;";
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setDouble(1, min);
+            preparedStatement.setDouble(2, max);
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery()
+                )
+            {
+                while (resultSet.next()) {
+                    filteredVehicles.add(vehicleParser(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return filteredVehicles;
+    }
 
 
     //CRUD methods
