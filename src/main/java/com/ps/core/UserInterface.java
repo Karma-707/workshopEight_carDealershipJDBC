@@ -281,7 +281,7 @@ public class UserInterface {
         System.out.println("➕ Vehicle Add Request");
         System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
         System.out.print("👉 Enter VIN: ");
-        int vin = checkIntInput();
+        String vin = checkStringInput();
 
         System.out.print("👉 Enter Year (e.g, 2021): ");
         int year = checkIntInput();
@@ -304,9 +304,11 @@ public class UserInterface {
         System.out.print("👉 Enter Price: ");
         double price = checkDoubleInput();
 
-        Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
-        dealership.addVehicle(newVehicle);
-        DealershipFileManager.saveDealership(dealership);
+        Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price, false);
+//        dealership.addVehicle(newVehicle);
+//        DealershipFileManager.saveDealership(dealership);
+
+        vehiclesDAO.create(newVehicle);
         System.out.println("✅ Vehicle added successfully!");
     }
 
