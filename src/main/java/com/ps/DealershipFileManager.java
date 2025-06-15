@@ -25,7 +25,7 @@ public class DealershipFileManager {
             //Read all the vehicles starting on line 2
             while((input = bufferedReader.readLine()) != null) {
                 String[] vehicleDetails = input.split("\\|");
-                int vin = Integer.parseInt(vehicleDetails[0]);
+                String vin = vehicleDetails[0];
                 int year = Integer.parseInt(vehicleDetails[1]);
                 String make = vehicleDetails[2];
                 String model = vehicleDetails[3];
@@ -35,7 +35,7 @@ public class DealershipFileManager {
                 double price = Double.parseDouble(vehicleDetails[7]);
 
                 //create new vehicle
-                Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+                Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price, false);
 
                 //add vehicle to dealership
                 dealership.addVehicle(vehicle);

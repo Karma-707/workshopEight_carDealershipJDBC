@@ -29,10 +29,14 @@ CREATE TABLE `Dealerships` (
 
 CREATE TABLE `Vehicles` (
     `Vin` VARCHAR(17) NOT NULL,
-    `Sold` BIT NOT NULL DEFAULT 0,
+    `Year` INT NOT NULL,
 	`Make` VARCHAR(30),
     `Model` VARCHAR(30),
+    `VehicleType` VARCHAR(30),
     `Color` VARCHAR(15),
+    `Odometer` INT,
+    `Price` DOUBLE,
+	`Sold` BIT NOT NULL DEFAULT 0,
     CONSTRAINT `PK_Vehicles` PRIMARY KEY (`Vin`)
 );
 
@@ -106,106 +110,111 @@ INSERT INTO Dealerships(DealershipID, Name, Address, Phone) VALUES(20, 'Coastal 
 # ---------------------------------------------------------------------- #
 # Add info into "Vehicles"                                               # --100
 # ---------------------------------------------------------------------- #
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1HGCM82633A123456', 0 , 'Honda', 'Accord', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1HGCM82633A654321', 1 , 'Ford', 'F-150', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3FAHP0HA9AR123456', 1, 'Nissan', 'Altima', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1NXBR32E54Z123456', 0, 'Hyundai', 'Elantra', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C4RJFBG0FC123456', 0, 'Jeep', 'Grand Cherokee', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1HGFA16526L123456', 1, 'Honda', 'Civic', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2T1BURHE5FC123456', 0, 'Toyota', 'Corolla', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FADP3F22JL123456', 0, 'Ford', 'Focus', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JHMFA16586S123456', 1, 'Honda', 'Fit', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3CZRE4H59BG123456', 0, 'Honda', 'CR-V', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2HNYD28317H123456', 0, 'Acura', 'MDX', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5NPE24AF7FH123456', 1, 'Hyundai', 'Sonata', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FMCU0J9XDU123456', 0, 'Ford', 'Escape', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JTDKN3DU0A1234567', 1, 'Toyota', 'Prius', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G1ZE5ST8HF123456', 0, 'Chevrolet', 'Malibu', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3N1AB7AP2HY123456', 1, 'Nissan', 'Sentra', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('KM8JU3AC4DU123456', 0, 'Hyundai', 'Tucson', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C4RJFAG3FC123456', 0, 'Jeep', 'Wrangler', 'Yellow');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('19UUA8F57FA123456', 1, 'Acura', 'ILX', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2T3ZF4DV5BW123456', 0, 'Toyota', 'RAV4', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTFW1ET9EFA12345', 1, 'Ford', 'F-250', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5J6RM4H53CL123456', 0, 'Honda', 'CR-V', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JN8AS5MV6FW123456', 1, 'Nissan', 'Rogue', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1GNSKBKC0FR123456', 0, 'Chevrolet', 'Tahoe', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3FA6P0H73ER123456', 0, 'Ford', 'Fusion', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('KMHD35LE9FU123456', 1, 'Hyundai', 'Elantra', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WAUAFAFL0AN123456', 0, 'Audi', 'A4', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C6RR7LT6FS123456', 1, 'Ram', '1500', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('19XFC2F59GE123456', 0, 'Honda', 'Civic', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5UXWX9C53E0L12345', 1, 'BMW', 'X3', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTFW1EG5JFA12345', 0, 'Ford', 'F-150', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2C4RC1BG3ER123456', 1, 'Chrysler', 'Pacifica', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G1ZE5ST5GF123456', 0, 'Chevrolet', 'Cruze', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3FA6P0H74HR123456', 1, 'Ford', 'Fusion', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5J6RM4H53CL123406', 0, 'Honda', 'CR-V', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JHMZF1D6XHS123456', 1, 'Honda', 'Insight', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C6RR7KT7FS123456', 0, 'Ram', '1500', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WA1D4AFP3CA123456', 1, 'Audi', 'Q5', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JN8AZ2KR6FT123456', 0, 'Nissan', 'Rogue', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3C6UR5FL1FG123456', 1, 'Ram', '2500', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('19UUA8F56GA123456', 0, 'Acura', 'ILX', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FM5K7D8XJGA12345', 1, 'Ford', 'Explorer', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5N1AT2MV2JC123456', 0, 'Nissan', 'Rogue', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1GNSKCKC6FR123456', 1, 'Chevrolet', 'Suburban', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C4PJMCBXFW123456', 0, 'Jeep', 'Cherokee', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTFW1E53JFA12345', 1, 'Ford', 'F-150', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('KM8JM12D26U123456', 0, 'Hyundai', 'Tucson', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WDDHF8JB9EB123456', 1, 'Mercedes-Benz', 'C-Class', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3CZRM3H5XEG123456', 0, 'Honda', 'CR-V', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G6KD57Y37U123456', 1, 'Cadillac', 'CTS', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5YJ3E1EA7HF123456', 0, 'Tesla', 'Model 3', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G1BE5SM0J7123456', 1, 'Chevrolet', 'Cruze', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2HGFC2F69KH123456', 0, 'Honda', 'Civic', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5NMS3CAD9KH123456', 1, 'Hyundai', 'Santa Fe', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('19XFC2F59GE123406', 0, 'Honda', 'Civic', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C6RR7KT8FS123456', 1, 'Ram', '1500', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WA1LMAFP5CA123456', 0, 'Audi', 'Q7', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTEX1CP4JK123456', 1, 'Ford', 'F-150', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5UXWX9C53E0L12346', 0, 'BMW', 'X3', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3FA6P0HD1KR123456', 1, 'Ford', 'Fusion', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C4RJFAG8FC123457', 0, 'Jeep', 'Grand Cherokee', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2FMPK4J88JBC12345', 1, 'Ford', 'Edge', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3N1AB7AP1KY123456', 0, 'Nissan', 'Sentra', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5J6RM4H57CL123457', 1, 'Honda', 'CR-V', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1GYS4CKJ8FR123457', 0, 'Cadillac', 'Escalade', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WAUBFAFL5AN123456', 1, 'Audi', 'A4', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JTDKN3DU7F0123456', 0, 'Toyota', 'Prius', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTEW1E53JFC12345', 1, 'Ford', 'F-150', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('KM8J3CA49JU123456', 0, 'Hyundai', 'Tucson', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3FA6P0LU6HR123456', 1, 'Ford', 'Fusion', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5XYZTDLB1HG123456', 0, 'Hyundai', 'Santa Fe', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G1BE5SM9J7123457', 1, 'Chevrolet', 'Cruze', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2HGFB2F54FH123457', 0, 'Honda', 'Civic', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1N4AL3AP3JC123456', 1, 'Nissan', 'Altima', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3C6UR5GL0FG123457', 0, 'Ram', '2500', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WBA8E9C55GK123456', 1, 'BMW', '328i', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C4PJMCBXFW123457', 0, 'Jeep', 'Cherokee', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5YJSA1E23HF123456', 1, 'Tesla', 'Model S', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1GNSKCKC8FR123457', 0, 'Chevrolet', 'Suburban', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JN8AZ2KR1FT123456', 1, 'Nissan', 'Rogue', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTEX1EP1JK123457', 0, 'Ford', 'F-150', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5UXWX9C58E0L12347', 1, 'BMW', 'X3', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3FA6P0H72KR123457', 0, 'Ford', 'Fusion', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('19UUA8F51GA123457', 1, 'Acura', 'ILX', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FM5K7D85JGA12345', 0, 'Ford', 'Explorer', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5N1AT2MV3JC123457', 1, 'Nissan', 'Rogue', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2HGFC2F59KH123457', 0, 'Honda', 'Civic', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G6KD57Y38U123457', 1, 'Cadillac', 'CTS', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3CZRE4H58BG123457', 0, 'Honda', 'CR-V', 'Green');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WDDHF8JB0EB123457', 1, 'Mercedes-Benz', 'C-Class', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1C6RR7KT9FS123457', 0, 'Ram', '1500', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('WA1LMAFP6CA123457', 1, 'Audi', 'Q7', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1FTFW1EG6JFA12345', 0, 'Ford', 'F-150', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('5J8TB4H55JL123456', 1, 'Acura', 'RDX', 'Silver');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('3N6CM0KN1KK123457', 0, 'Nissan', 'Frontier', 'Gray');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1G1BE5SM0J7123458', 1, 'Chevrolet', 'Cruze', 'Blue');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('2FMPK4J81JBC12346', 0, 'Ford', 'Edge', 'White');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('JN8AZ2KR3FT123457', 1, 'Nissan', 'Rogue', 'Black');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('KM8J3CA51JU123457', 0, 'Hyundai', 'Tucson', 'Red');
-INSERT INTO Vehicles(Vin, Sold, Make, Model, Color) VALUES('1GNSKCKD7FR123458', 1, 'Chevrolet', 'Suburban', 'Green');
+INSERT INTO Vehicles (Vin, Year, Make, Model, VehicleType, Color, Odometer, Price, Sold) VALUES
+('1HGCM82633A123456', 2003, 'Honda', 'Accord', 'Sedan', 'Blue', 120000, 6500.00, 0),
+('1HGCM82633A654321', 2015, 'Ford', 'F-150', 'Truck', 'Black', 90000, 15500.00, 1),
+('3FAHP0HA9AR123456', 2010, 'Nissan', 'Altima', 'Sedan', 'Gray', 110000, 7200.00, 1),
+('1NXBR32E54Z123456', 2012, 'Hyundai', 'Elantra', 'Sedan', 'White', 95000, 6300.00, 0),
+('1C4RJFBG0FC123456', 2016, 'Jeep', 'Grand Cherokee', 'SUV', 'Silver', 85000, 17500.00, 0),
+('1HGFA16526L123456', 2006, 'Honda', 'Civic', 'Sedan', 'Red', 105000, 5900.00, 1),
+('2T1BURHE5FC123456', 2015, 'Toyota', 'Corolla', 'Sedan', 'Blue', 88000, 7400.00, 0),
+('1FADP3F22JL123456', 2018, 'Ford', 'Focus', 'Hatchback', 'White', 67000, 8700.00, 0),
+('JHMFA16586S123456', 2008, 'Honda', 'Fit', 'Hatchback', 'Green', 99000, 5100.00, 1),
+('3CZRE4H59BG123456', 2011, 'Honda', 'CR-V', 'SUV', 'Black', 92000, 9800.00, 0),
+('2HNYD28317H123456', 2007, 'Acura', 'MDX', 'SUV', 'White', 102000, 8900.00, 0),
+('5NPE24AF7FH123456', 2015, 'Hyundai', 'Sonata', 'Sedan', 'Silver', 91000, 8200.00, 1),
+('1FMCU0J9XDU123456', 2013, 'Ford', 'Escape', 'SUV', 'Blue', 88000, 9900.00, 0),
+('JTDKN3DU0A1234567', 2010, 'Toyota', 'Prius', 'Hatchback', 'Green', 100000, 7800.00, 1),
+('1G1ZE5ST8HF123456', 2017, 'Chevrolet', 'Malibu', 'Sedan', 'Red', 77000, 9400.00, 0),
+('3N1AB7AP2HY123456', 2017, 'Nissan', 'Sentra', 'Sedan', 'Black', 69000, 8900.00, 1),
+('KM8JU3AC4DU123456', 2013, 'Hyundai', 'Tucson', 'SUV', 'Gray', 93000, 9500.00, 0),
+('1C4RJFAG3FC123456', 2016, 'Jeep', 'Wrangler', 'SUV', 'Yellow', 76000, 18500.00, 0),
+('19UUA8F57FA123456', 2015, 'Acura', 'ILX', 'Sedan', 'Blue', 72000, 10200.00, 1),
+
+('2T3ZF4DV5BW123456', 2011, 'Toyota', 'RAV4', 'SUV', 'White', 98000, 10200.00, 0),
+('1FTFW1ET9EFA12345', 2014, 'Ford', 'F-250', 'Truck', 'Black', 89000, 21500.00, 1),
+('5J6RM4H53CL123456', 2012, 'Honda', 'CR-V', 'SUV', 'Silver', 96000, 10800.00, 0),
+('JN8AS5MV6FW123456', 2015, 'Nissan', 'Rogue', 'SUV', 'Red', 87000, 11200.00, 1),
+('1GNSKBKC0FR123456', 2015, 'Chevrolet', 'Tahoe', 'SUV', 'Green', 95000, 22500.00, 0),
+('3FA6P0H73ER123456', 2014, 'Ford', 'Fusion', 'Sedan', 'Blue', 91000, 9200.00, 0),
+('KMHD35LE9FU123456', 2015, 'Hyundai', 'Elantra', 'Sedan', 'White', 88000, 7500.00, 1),
+('WAUAFAFL0AN123456', 2010, 'Audi', 'A4', 'Sedan', 'Black', 101000, 9600.00, 0),
+('1C6RR7LT6FS123456', 2015, 'Ram', '1500', 'Truck', 'Gray', 93000, 19800.00, 1),
+('19XFC2F59GE123456', 2016, 'Honda', 'Civic', 'Sedan', 'Silver', 87000, 8700.00, 0),
+('5UXWX9C53E0L12345', 2014, 'BMW', 'X3', 'SUV', 'Blue', 76000, 18500.00, 1),
+('1FTFW1EG5JFA12345', 2018, 'Ford', 'F-150', 'Truck', 'Red', 72000, 26500.00, 0),
+('2C4RC1BG3ER123456', 2014, 'Chrysler', 'Pacifica', 'Van', 'White', 97000, 11500.00, 1),
+('1G1ZE5ST5GF123456', 2016, 'Chevrolet', 'Cruze', 'Sedan', 'Blue', 91000, 8100.00, 0),
+('3FA6P0H74HR123456', 2017, 'Ford', 'Fusion', 'Sedan', 'Gray', 89000, 9400.00, 1),
+('5J6RM4H53CL123406', 2012, 'Honda', 'CR-V', 'SUV', 'Black', 94000, 10700.00, 0),
+('JHMZF1D6XHS123456', 2017, 'Honda', 'Insight', 'Hatchback', 'Silver', 67000, 9900.00, 1),
+('1C6RR7KT7FS123456', 2015, 'Ram', '1500', 'Truck', 'Green', 91000, 19200.00, 0),
+
+('WA1D4AFP3CA123456', 2012, 'Audi', 'Q5', 'SUV', 'White', 95000, 13800.00, 1),
+('JN8AZ2KR6FT123456', 2015, 'Nissan', 'Rogue', 'SUV', 'Red', 88000, 11400.00, 0),
+('3C6UR5FL1FG123456', 2015, 'Ram', '2500', 'Truck', 'Blue', 92000, 24800.00, 1),
+('19UUA8F56GA123456', 2016, 'Acura', 'ILX', 'Sedan', 'Black', 74000, 10200.00, 0),
+('1FM5K7D8XJGA12345', 2018, 'Ford', 'Explorer', 'SUV', 'Silver', 69000, 18700.00, 1),
+('5N1AT2MV2JC123456', 2018, 'Nissan', 'Rogue', 'SUV', 'White', 64000, 14500.00, 0),
+('1GNSKCKC6FR123456', 2015, 'Chevrolet', 'Suburban', 'SUV', 'Green', 93000, 21900.00, 1),
+('1C4PJMCBXFW123456', 2015, 'Jeep', 'Cherokee', 'SUV', 'Gray', 91000, 12800.00, 0),
+('1FTFW1E53JFA12345', 2018, 'Ford', 'F-150', 'Truck', 'Blue', 75000, 26700.00, 1),
+('KM8JM12D26U123456', 2006, 'Hyundai', 'Tucson', 'SUV', 'Red', 102000, 5600.00, 0),
+('WDDHF8JB9EB123456', 2014, 'Mercedes-Benz', 'C-Class', 'Sedan', 'Black', 82000, 16200.00, 1),
+('3CZRM3H5XEG123456', 2014, 'Honda', 'CR-V', 'SUV', 'Silver', 88000, 10900.00, 0),
+('1G6KD57Y37U123456', 2007, 'Cadillac', 'CTS', 'Sedan', 'White', 105000, 7500.00, 1),
+('5YJ3E1EA7HF123456', 2017, 'Tesla', 'Model 3', 'Sedan', 'Red', 58000, 29900.00, 0),
+('1G1BE5SM0J7123456', 2018, 'Chevrolet', 'Cruze', 'Sedan', 'Blue', 72000, 9100.00, 1),
+('2HGFC2F69KH123456', 2019, 'Honda', 'Civic', 'Sedan', 'White', 53000, 12300.00, 0),
+('5NMS3CAD9KH123456', 2019, 'Hyundai', 'Santa Fe', 'SUV', 'Gray', 47000, 15900.00, 1),
+('19XFC2F59GE123406', 2016, 'Honda', 'Civic', 'Sedan', 'Black', 79000, 9400.00, 0),
+('1C6RR7KT8FS123456', 2015, 'Ram', '1500', 'Truck', 'Blue', 85000, 19400.00, 1),
+('WA1LMAFP5CA123456', 2012, 'Audi', 'Q7', 'SUV', 'Silver', 99000, 17300.00, 0),
+
+('1FTEX1CP4JK123456', 2018, 'Ford', 'F-150', 'Truck', 'White', 65000, 24800.00, 1),
+('5UXWX9C53E0L12346', 2014, 'BMW', 'X3', 'SUV', 'Black', 88000, 17200.00, 0),
+('3FA6P0HD1KR123456', 2019, 'Ford', 'Fusion', 'Sedan', 'Red', 54000, 14500.00, 1),
+('1C4RJFAG8FC123457', 2015, 'Jeep', 'Grand Cherokee', 'SUV', 'Blue', 78000, 19800.00, 0),
+('2FMPK4J88JBC12345', 2018, 'Ford', 'Edge', 'SUV', 'White', 61000, 16900.00, 1),
+('3N1AB7AP1KY123456', 2019, 'Nissan', 'Sentra', 'Sedan', 'Gray', 49000, 11200.00, 0),
+('5J6RM4H57CL123457', 2012, 'Honda', 'CR-V', 'SUV', 'Red', 97000, 9800.00, 1),
+('1GYS4CKJ8FR123457', 2015, 'Cadillac', 'Escalade', 'SUV', 'Black', 76000, 23900.00, 0),
+('WAUBFAFL5AN123456', 2010, 'Audi', 'A4', 'Sedan', 'Silver', 101000, 8700.00, 1),
+('JTDKN3DU7F0123456', 2015, 'Toyota', 'Prius', 'Hatchback', 'White', 68000, 13600.00, 0),
+('1FTEW1E53JFC12345', 2018, 'Ford', 'F-150', 'Truck', 'Green', 71000, 25400.00, 1),
+('KM8J3CA49JU123456', 2018, 'Hyundai', 'Tucson', 'SUV', 'Blue', 59000, 14800.00, 0),
+('3FA6P0LU6HR123456', 2017, 'Ford', 'Fusion', 'Sedan', 'Gray', 63000, 13900.00, 1),
+('5XYZTDLB1HG123456', 2017, 'Hyundai', 'Santa Fe', 'SUV', 'Black', 77000, 15300.00, 0),
+('1G1BE5SM9J7123457', 2018, 'Chevrolet', 'Cruze', 'Sedan', 'Red', 53000, 9700.00, 1),
+('2HGFB2F54FH123457', 2015, 'Honda', 'Civic', 'Sedan', 'White', 85000, 9900.00, 0),
+('1N4AL3AP3JC123456', 2018, 'Nissan', 'Altima', 'Sedan', 'Silver', 57000, 12300.00, 1),
+('3C6UR5GL0FG123457', 2015, 'Ram', '2500', 'Truck', 'Blue', 92000, 21700.00, 0),
+('WBA8E9C55GK123456', 2016, 'BMW', '328i', 'Sedan', 'Black', 69000, 18300.00, 1),
+('1C4PJMCBXFW123457', 2015, 'Jeep', 'Cherokee', 'SUV', 'Green', 83000, 12100.00, 0),
+
+('5YJSA1E23HF123456', 2017, 'Tesla', 'Model S', 'Sedan', 'White', 42000, 39900.00, 1),
+('1GNSKCKC8FR123457', 2015, 'Chevrolet', 'Suburban', 'SUV', 'Gray', 82000, 24500.00, 0),
+('JN8AZ2KR1FT123456', 2015, 'Nissan', 'Rogue', 'SUV', 'Red', 67000, 14800.00, 1),
+('1FTEX1EP1JK123457', 2018, 'Ford', 'F-150', 'Truck', 'Blue', 59000, 27900.00, 0),
+('5UXWX9C58E0L12347', 2014, 'BMW', 'X3', 'SUV', 'Silver', 88000, 16900.00, 1),
+('3FA6P0H72KR123457', 2019, 'Ford', 'Fusion', 'Sedan', 'White', 50000, 14200.00, 0),
+('19UUA8F51GA123457', 2016, 'Acura', 'ILX', 'Sedan', 'Black', 61000, 13900.00, 1),
+('1FM5K7D85JGA12345', 2018, 'Ford', 'Explorer', 'SUV', 'Red', 58000, 26400.00, 0),
+('5N1AT2MV3JC123457', 2018, 'Nissan', 'Rogue', 'SUV', 'Blue', 53000, 15900.00, 1),
+('2HGFC2F59KH123457', 2019, 'Honda', 'Civic', 'Sedan', 'Silver', 46000, 12900.00, 0),
+('1G6KD57Y38U123457', 2008, 'Cadillac', 'CTS', 'Sedan', 'White', 91000, 9900.00, 1),
+('3CZRE4H58BG123457', 2011, 'Honda', 'CR-V', 'SUV', 'Green', 97000, 9200.00, 0),
+('WDDHF8JB0EB123457', 2014, 'Mercedes-Benz', 'C-Class', 'Sedan', 'Black', 78000, 18800.00, 1),
+('1C6RR7KT9FS123457', 2015, 'Ram', '1500', 'Truck', 'Red', 73000, 20300.00, 0),
+('WA1LMAFP6CA123457', 2012, 'Audi', 'Q7', 'SUV', 'Blue', 85000, 17200.00, 1),
+('1FTFW1EG6JFA12345', 2018, 'Ford', 'F-150', 'Truck', 'White', 61000, 26600.00, 0),
+('5J8TB4H55JL123456', 2018, 'Acura', 'RDX', 'SUV', 'Silver', 53000, 22400.00, 1),
+('3N6CM0KN1KK123457', 2019, 'Nissan', 'Frontier', 'Truck', 'Gray', 49000, 21900.00, 0),
+('1G1BE5SM0J7123458', 2018, 'Chevrolet', 'Cruze', 'Sedan', 'Blue', 52000, 10400.00, 1),
+('2FMPK4J81JBC12346', 2018, 'Ford', 'Edge', 'SUV', 'White', 59000, 17400.00, 0),
+('JN8AZ2KR3FT123457', 2015, 'Nissan', 'Rogue', 'SUV', 'Black', 74000, 13600.00, 1),
+('KM8J3CA51JU123457', 2018, 'Hyundai', 'Tucson', 'SUV', 'Red', 57000, 14900.00, 0),
+('1GNSKCKD7FR123458', 2015, 'Chevrolet', 'Suburban', 'SUV', 'Green', 86000, 23900.00, 1);
 
 # ---------------------------------------------------------------------- #
 # Add info into "Inventory"                                              # --100
