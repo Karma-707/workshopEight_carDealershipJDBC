@@ -318,26 +318,27 @@ public class UserInterface {
         System.out.println("➖ Vehicle Remove Request");
         System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━");
         System.out.print("👉 Enter VIN: ");
-        int vin = checkIntInput();
+        String vin = checkStringInput();
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
-        Vehicle vehicleToRemove = null;
+//        List<Vehicle> vehicles = dealership.getAllVehicles();
+        Vehicle vehicleToRemove = vehiclesDAO.getByVin(vin);
 
         //find vehicle using VIN
-        for(Vehicle vehicle: vehicles) {
-            if(vehicle.getVin() == vin) {
-                vehicleToRemove = vehicle;
-                break;
-            }
-        }
+//        for(Vehicle vehicle: vehicles) {
+//            if(vehicle.getVin().equals(vin)) {
+//                vehicleToRemove = vehicle;
+//                break;
+//            }
+//        }
 
         //check if there is such vehicle and display results
         if(vehicleToRemove == null) {
             System.out.println("📭 No vehicles found with that VIN");
         }
         else {
-            dealership.removeVehicle(vehicleToRemove);
-            DealershipFileManager.saveDealership(dealership);
+//            dealership.removeVehicle(vehicleToRemove);
+//            DealershipFileManager.saveDealership(dealership);
+            vehiclesDAO.delete(vin);
             System.out.println("✅ Vehicle removed successfully!");
         }
     }
