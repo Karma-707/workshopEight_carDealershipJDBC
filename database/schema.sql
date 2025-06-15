@@ -60,8 +60,12 @@ CREATE TABLE `SalesContracts` (
     `SalesContractID` INTEGER NOT NULL AUTO_INCREMENT,
     `Vin` VARCHAR(17) NOT NULL,
     `BuyerName` VARCHAR(50) NOT NULL,
+    `CustomerEmail` VARCHAR(100) NOT NULL,
     `SalePrice` DECIMAL(10,2) NOT NULL,
     `SaleDate` DATE NOT NULL,
+    `RecordingFee` DECIMAL(10,2) NOT NULL,
+    `ProcessingFee` DECIMAL(10,2) NOT NULL,
+    `IsFinanced` BOOLEAN NOT NULL,
     CONSTRAINT `PK_SalesContracts` PRIMARY KEY (`SalesContractID`),
     CONSTRAINT `FK_SalesContracts_Vehicles` FOREIGN KEY (Vin) REFERENCES Vehicles(Vin)
 );
@@ -75,8 +79,11 @@ CREATE TABLE `LeaseContracts` (
     `LeaseContractID` INTEGER NOT NULL AUTO_INCREMENT,
     `Vin` VARCHAR(17) NOT NULL,
     `LeaseName` VARCHAR(50) NOT NULL,
+    `CustomerEmail` VARCHAR(100) NOT NULL,
     `LeaseStart` DATE NOT NULL,
     `LeaseEnd` DATE NOT NULL,
+	`ExpectedEndingValue` DECIMAL(10,2) NOT NULL,
+	`LeaseFee` DECIMAL(10,2) NOT NULL,
     `MonthlyPayment` DECIMAL(10,2) NOT NULL,
     CONSTRAINT `PK_LeaseContracts` PRIMARY KEY (`LeaseContractID`),
     CONSTRAINT `FK_LeaseContracts_Vehicles` FOREIGN KEY (Vin) REFERENCES Vehicles(Vin)
@@ -323,47 +330,50 @@ INSERT INTO Inventory (DealershipID, Vin) VALUES (10, '1GNSKCKD7FR123458');
 # ---------------------------------------------------------------------- #
 # Add info into "SalesContracts"               		                     # --20
 # ---------------------------------------------------------------------- #
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (1, '1HGCM82633A654321', 'Alice Martin', 23500.00, '2024-01-15');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (2, '3FAHP0HA9AR123456', 'Carlos Rivera', 19999.99, '2024-02-10');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (3, '1HGFA16526L123456', 'Dana Li', 17800.50, '2024-03-05');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (4, 'JHMFA16586S123456', 'Evan Jacobs', 16350.00, '2024-04-20');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (5, '1C4RJFBG0FC123456', 'Fatima El-Sayed', 26875.75, '2024-05-30');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (6, '2FMPK4J88JBC12345', 'Grace Lee', 21999.99, '2024-06-10');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (7, '1N4AL3AP3JC123456', 'Henry Davis', 22500.00, '2024-06-15');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (8, '5YJSA1E23HF123456', 'Isabel Gomez', 31000.00, '2024-07-05');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (9, 'KM8J3CA49JU123456', 'Jack Wilson', 18999.50, '2024-07-20');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (10, '3N1AB7AP1KY123456', 'Kelly Brown', 17999.75, '2024-08-01');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (11, '1FTEW1E53JFC12345', 'Liam Smith', 25400.00, '2024-08-12');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (12, '5XYZTDLB1HG123456', 'Mia Johnson', 29850.00, '2024-08-25');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (13, '1G1BE5SM9J7123457', 'Noah Thompson', 21500.00, '2024-09-05');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (14, 'JN8AZ2KR1FT123456', 'Olivia Martinez', 19999.99, '2024-09-15');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (15, '1GNSKCKC8FR123457', 'Paul Harris', 23000.00, '2024-10-01');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (16, 'WAUBFAFL5AN123456', 'Quinn Walker', 27999.99, '2024-10-12');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (17, '2HGFB2F54FH123457', 'Rachel Adams', 18500.00, '2024-10-20');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (18, '3C6UR5GL0FG123457', 'Samuel King', 24999.00, '2024-11-05');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (19, '1C4PJMCBXFW123457', 'Tina Evans', 27250.00, '2024-11-18');
-INSERT INTO SalesContracts (SalesContractID, Vin, BuyerName, SalePrice, SaleDate) VALUES (20, 'JTDKN3DU7F0123456', 'Victor Green', 19450.00, '2024-12-01');
+INSERT INTO SalesContracts (Vin, BuyerName, CustomerEmail, SalePrice, SaleDate, RecordingFee, ProcessingFee, IsFinanced) VALUES
+('1HGCM82633A654321', 'Alice Martin', 'alice.martin@example.com', 23500.00, '2024-01-15', 100.00, 50.00, TRUE),
+('3FAHP0HA9AR123456', 'Carlos Rivera', 'carlos.rivera@example.com', 19999.99, '2024-02-10', 100.00, 50.00, FALSE),
+('1HGFA16526L123456', 'Dana Li', 'dana.li@example.com', 17800.50, '2024-03-05', 100.00, 50.00, TRUE),
+('JHMFA16586S123456', 'Evan Jacobs', 'evan.jacobs@example.com', 16350.00, '2024-04-20', 100.00, 50.00, FALSE),
+('1C4RJFBG0FC123456', 'Fatima El-Sayed', 'fatima.elsayed@example.com', 26875.75, '2024-05-30', 100.00, 50.00, TRUE),
+('2FMPK4J88JBC12345', 'Grace Lee', 'grace.lee@example.com', 21999.99, '2024-06-10', 100.00, 50.00, FALSE),
+('1N4AL3AP3JC123456', 'Henry Davis', 'henry.davis@example.com', 22500.00, '2024-06-15', 100.00, 50.00, TRUE),
+('5YJSA1E23HF123456', 'Isabel Gomez', 'isabel.gomez@example.com', 31000.00, '2024-07-05', 100.00, 50.00, FALSE),
+('KM8J3CA49JU123456', 'Jack Wilson', 'jack.wilson@example.com', 18999.50, '2024-07-20', 100.00, 50.00, TRUE),
+('3N1AB7AP1KY123456', 'Kelly Brown', 'kelly.brown@example.com', 17999.75, '2024-08-01', 100.00, 50.00, FALSE),
+('1FTEW1E53JFC12345', 'Liam Smith', 'liam.smith@example.com', 25400.00, '2024-08-12', 100.00, 50.00, TRUE),
+('5XYZTDLB1HG123456', 'Mia Johnson', 'mia.johnson@example.com', 29850.00, '2024-08-25', 100.00, 50.00, FALSE),
+('1G1BE5SM9J7123457', 'Noah Thompson', 'noah.thompson@example.com', 21500.00, '2024-09-05', 100.00, 50.00, TRUE),
+('JN8AZ2KR1FT123456', 'Olivia Martinez', 'olivia.martinez@example.com', 19999.99, '2024-09-15', 100.00, 50.00, FALSE),
+('1GNSKCKC8FR123457', 'Paul Harris', 'paul.harris@example.com', 23000.00, '2024-10-01', 100.00, 50.00, TRUE),
+('WAUBFAFL5AN123456', 'Quinn Walker', 'quinn.walker@example.com', 27999.99, '2024-10-12', 100.00, 50.00, FALSE),
+('2HGFB2F54FH123457', 'Rachel Adams', 'rachel.adams@example.com', 18500.00, '2024-10-20', 100.00, 50.00, TRUE),
+('3C6UR5GL0FG123457', 'Samuel King', 'samuel.king@example.com', 24999.00, '2024-11-05', 100.00, 50.00, FALSE),
+('1C4PJMCBXFW123457', 'Tina Evans', 'tina.evans@example.com', 27250.00, '2024-11-18', 100.00, 50.00, TRUE),
+('JTDKN3DU7F0123456', 'Victor Green', 'victor.green@example.com', 19450.00, '2024-12-01', 100.00, 50.00, FALSE);
+
 
 # ---------------------------------------------------------------------- #
 # Add info into "LeaseContracts"                                         # --20
 # ---------------------------------------------------------------------- #
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES(1, '2T1BURHE5FC123456', 'Liam Carter', '2024-01-15', '2027-01-15', 325.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (2, '1FADP3F22JL123456', 'Sophia Nguyen', '2023-06-01', '2026-06-01', 310.75);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (3, '1NXBR32E54Z123456', 'Jackson Lee', '2025-03-10', '2028-03-10', 289.99);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (4, '3CZRE4H59BG123456', 'Olivia Martinez', '2024-11-01', '2027-11-01', 340.50);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (5, '1HGCM82633A123456', 'Noah Kim', '2022-09-01', '2025-09-01', 295.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (6, '5YJSA1E23HF123456', 'Emma Johnson', '2024-02-15', '2027-02-15', 400.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (7, '1G1BE5SM9J7123457', 'Mason Brown', '2023-10-01', '2026-10-01', 320.75);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (8, '3N1AB7AP1KY123456', 'Ava Davis', '2024-05-10', '2027-05-10', 310.50);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (9, 'KM8J3CA49JU123456', 'Lucas Miller', '2023-08-20', '2026-08-20', 305.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (10, '1FTEW1E53JFC12345', 'Isabella Wilson', '2024-04-01', '2027-04-01', 335.25);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (11, 'JN8AZ2KR1FT123456', 'Ethan Moore', '2023-11-15', '2026-11-15', 290.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (12, '1GNSKCKC8FR123457', 'Mia Taylor', '2024-07-10', '2027-07-10', 310.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (13, 'WAUBFAFL5AN123456', 'James Anderson', '2023-12-01', '2026-12-01', 325.50);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (14, '2HGFB2F54FH123457', 'Charlotte Thomas', '2024-06-15', '2027-06-15', 315.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (15, '3C6UR5GL0FG123457', 'Benjamin Jackson', '2023-09-10', '2026-09-10', 340.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (16, '1C4PJMCBXFW123457', 'Ella White', '2024-03-05', '2027-03-05', 300.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (17, 'JTDKN3DU7F0123456', 'Alexander Harris', '2023-07-01', '2026-07-01', 320.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (18, '5XYZTDLB1HG123456', 'Sofia Martin', '2024-01-20', '2027-01-20', 345.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (19, '1N4AL3AP3JC123456', 'William Garcia', '2023-10-30', '2026-10-30', 310.00);
-INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, LeaseStart, LeaseEnd, MonthlyPayment) VALUES (20, '2FMPK4J88JBC12345', 'Amelia Martinez', '2024-08-15', '2027-08-15', 330.00);
+INSERT INTO LeaseContracts (LeaseContractID, Vin, LeaseName, CustomerEmail, LeaseStart, LeaseEnd, ExpectedEndingValue, LeaseFee, MonthlyPayment) VALUES
+(1, '2T1BURHE5FC123456', 'Liam Carter', 'liam.carter@gmail.com', '2024-01-15', '2027-01-15', 5850.00, 819.00, 325.00),
+(2, '1FADP3F22JL123456', 'Sophia Nguyen', 'sophia.nguyen@yahoo.com', '2023-06-01', '2026-06-01', 5601.50, 784.21, 310.75),
+(3, '1NXBR32E54Z123456', 'Jackson Lee', 'jackson.lee@outlook.com', '2025-03-10', '2028-03-10', 5219.82, 730.77, 289.99),
+(4, '3CZRE4H59BG123456', 'Olivia Martinez', 'olivia.martinez@gmail.com', '2024-11-01', '2027-11-01', 6130.80, 858.31, 340.50),
+(5, '1HGCM82633A123456', 'Noah Kim', 'noah.kim@hotmail.com', '2022-09-01', '2025-09-01', 5310.00, 743.40, 295.00),
+(6, '5YJSA1E23HF123456', 'Emma Johnson', 'emma.j@icloud.com', '2024-02-15', '2027-02-15', 7200.00, 1008.00, 400.00),
+(7, '1G1BE5SM9J7123457', 'Mason Brown', 'mason.b_92@yahoo.com', '2023-10-01', '2026-10-01', 5773.50, 808.29, 320.75),
+(8, '3N1AB7AP1KY123456', 'Ava Davis', 'ava.davis@gmail.com', '2024-05-10', '2027-05-10', 5590.80, 782.71, 310.50),
+(9, 'KM8J3CA49JU123456', 'Lucas Miller', 'lucas.miller123@outlook.com', '2023-08-20', '2026-08-20', 5490.00, 768.60, 305.00),
+(10, '1FTEW1E53JFC12345', 'Isabella Wilson', 'isabella.wilson@gmail.com', '2024-04-01', '2027-04-01', 6034.50, 844.83, 335.25),
+(11, 'JN8AZ2KR1FT123456', 'Ethan Moore', 'ethan.moore@yahoo.com', '2023-11-15', '2026-11-15', 5220.00, 730.80, 290.00),
+(12, '1GNSKCKC8FR123457', 'Mia Taylor', 'mia.taylor88@gmail.com', '2024-07-10', '2027-07-10', 5580.00, 780.60, 310.00),
+(13, 'WAUBFAFL5AN123456', 'James Anderson', 'j.anderson@live.com', '2023-12-01', '2026-12-01', 5869.00, 820.66, 325.50),
+(14, '2HGFB2F54FH123457', 'Charlotte Thomas', 'charlotte.t@hotmail.com', '2024-06-15', '2027-06-15', 5670.00, 793.80, 315.00),
+(15, '3C6UR5GL0FG123457', 'Benjamin Jackson', 'ben.jackson@gmail.com', '2023-09-10', '2026-09-10', 6120.00, 856.80, 340.00),
+(16, '1C4PJMCBXFW123457', 'Ella White', 'ella.white@icloud.com', '2024-03-05', '2027-03-05', 5400.00, 756.00, 300.00),
+(17, 'JTDKN3DU7F0123456', 'Alexander Harris', 'alex.harris@yahoo.com', '2023-07-01', '2026-07-01', 5760.00, 806.40, 320.00),
+(18, '5XYZTDLB1HG123456', 'Sofia Martin', 'sofia.martin@gmail.com', '2024-01-20', '2027-01-20', 6210.00, 867.00, 345.00),
+(19, '1N4AL3AP3JC123456', 'William Garcia', 'w.garcia@hotmail.com', '2023-10-30', '2026-10-30', 5580.00, 780.60, 310.00),
+(20, '2FMPK4J88JBC12345', 'Amelia Martinez', 'amelia.mtz@gmail.com', '2024-08-15', '2027-08-15', 5940.00, 831.60, 330.00);

@@ -4,7 +4,7 @@ Welcome to the **Vehicle Dealership Management System**!
 This project allows the user to manage a vehicle inventory for a dealership.
 A console-based Java application that simulates a full vehicle dealership management system. 
 It supports inventory operations, contract processing, receipt generation, error logging, and an interactive user interface.
-
+This version uses a **MySQL database** and the **DAO (Data Access Object) pattern** for clean data management.
 
 ![Home Screen](/images/homeScreen.png)
 
@@ -16,7 +16,7 @@ It supports inventory operations, contract processing, receipt generation, error
 - Create and save **Sales** or **Lease** contracts.
 - Automatically removes vehicles from inventory after a transaction.
 - Sales contracts support financing options.
-- Contracts are saved to a `contracts.csv` file.
+- Automatically marks vehicle as **sold** in inventory
 
 ### 🧾 Receipt Generation
 - Console-formatted, professional-style receipts with emojis.
@@ -24,6 +24,7 @@ It supports inventory operations, contract processing, receipt generation, error
 - Displays taxes, fees, financing, and monthly payments.
 
 ### 🔍 Inventory Search & Filter
+- Add, update, or mark vehicles as sold
 - Search vehicles by:
   - 💰 Price range
   - 🏷️ Make and Model
@@ -31,12 +32,19 @@ It supports inventory operations, contract processing, receipt generation, error
   - 🎨 Color
   - 🛣️ Mileage range
   - 🚘 Vehicle type (Car, Truck, SUV, Van)
+- Shows only **available (unsold)** vehicles
 
 ### 🛠️ Inventory Management
 - Add or remove vehicles via console prompts.
 - Changes are saved to `vehicles.csv`.
 - Displays all vehicles currently available in the dealership's inventory.
 
+### ⚙️ DAO & Database
+- All data stored in **MySQL** (no more CSV files)
+- DAOs handle all interactions:
+  - `VehiclesDAO`
+  - `SalesContractDAO`
+  - `LeaseContractDAO`
 
 ### Filtering Screenshots
 
@@ -100,6 +108,19 @@ Leasing Vehicle
 
 ---
 
+## 🛠 Technologies Used
+
+| Tech        | Description                         |
+|-------------|-------------------------------------|
+| Java        | Console application logic           |
+| JDBC        | Database connection & SQL queries   |
+| MySQL       | Persistent data storage             |
+| DAO Pattern | Separation of DB logic              |
+| Log File    | Logs exceptions to `exceptions.log` |
+
+
+---
+
 ## 🗂️ File List
 
 | **File Name**                | **Purpose**                                                                       | **Key Features**                                                                                                                                                                               |
@@ -113,6 +134,17 @@ Leasing Vehicle
 | `ContractFileManager.java`   | Handles reading and writing contract data to a persistent storage file.           | - Saves contract details to a CSV file (e.g., `contracts.csv`).<br>- Supports both sales and lease contract serialization.                                                                     |
 | `LeaseContract.java`         | Represents a lease agreement for a vehicle.                                       | - Calculates expected monthly payments.<br>- Includes lease-specific fields such as lease term and rate.                                                                                       |
 | `SalesContract.java`         | Represents a finalized contract for a vehicle purchase.                           | - Calculates total cost including fees and sales tax.<br>- Stores details like finance option and down payment.                                                                                |
+| `VehiclesDAO.java`           | Handles all vehicle database interactions.                                        | - CRUD operations for vehicles.<br>- Includes filters by price, make, model, year, etc.<br>- Marks vehicles as sold rather than deleting.                                                      |
+| `SalesContractDAO.java`      | Handles database operations for sales contracts.                                  | - Inserts new sales contracts into the DB.<br>- Ensures vehicle exists and handles foreign key relations.<br>- Calculates monthly payment and stores full sale details.                        |
+| `LeaseContractDAO.java`      | Manages lease contract interactions with the database.                            | - Inserts new lease contracts.<br>- Calculates lease pricing, end dates, and monthly payments.<br>- Enforces referential integrity with `vehicles` table.                                      |
+| `Main.java`                  | Entry point of the application.                                                   | - Launches the program.<br>- Calls the `UserInterface` display method.                                                                                                                         |
+
+
+## 🧪 Experimental / Unused Classes
+
+| **File Name**     | **Purpose**                                                                | **Status**              |
+|------------------|-----------------------------------------------------------------------------|-------------------------|
+| `InventoryDAO.java` | Intended as an abstraction layer over `VehiclesDAO`. May be used later.  | Unused / For future use |
 
 ---
 
@@ -234,6 +266,6 @@ Use this code at your own risk. The developers are not responsible for any data 
 # 🧑‍💻 Author
 💻 Developed by: Meixin Zhang
 
-📅 Date: May 18th, 2025
+📅 Date: June 15th, 2025
 
 Created with ❤️ using Java.
