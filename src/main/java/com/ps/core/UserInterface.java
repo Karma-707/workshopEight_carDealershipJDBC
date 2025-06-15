@@ -216,13 +216,14 @@ public class UserInterface {
         System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━");
         System.out.println("🎨 Color Request Filter");
         System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
-//        scanner.nextLine(); //eat white space
 
         //ask user for color to filter
         System.out.print("👉 Enter Color: ");
         String color = checkStringInput();
 
-        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByColor(color);
+//        List<Vehicle> filteredVehicles = dealership.getVehiclesByColor(color);
+        List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByColor(color);
+
 
         //display vehicles filtered by color
         if(filteredVehicles.isEmpty()) {

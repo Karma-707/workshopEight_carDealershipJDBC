@@ -129,6 +129,34 @@ public class VehiclesDAO {
         return filteredVehicles;
     }
 
+    //filter by color
+    public List<Vehicle> getVehiclesByColor(String color) {
+        List<Vehicle> filteredVehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE Color LIKE ?;";
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, "%" + color + "%");
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery()
+                )
+            {
+                while (resultSet.next()) {
+                    filteredVehicles.add(vehicleParser(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return filteredVehicles;
+    }
+
+
 
     //CRUD methods
     public List<Vehicle> getAll() {
