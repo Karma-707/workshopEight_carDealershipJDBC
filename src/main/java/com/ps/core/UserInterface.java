@@ -134,43 +134,54 @@ public class UserInterface {
 
         //ask user for model to filter
         System.out.print("👉 Enter Make: ");
-        String make = scanner.nextLine();
+        String make = scanner.nextLine().trim();
         System.out.print("👉 Enter Model: ");
-        String model = scanner.nextLine();
+        String model = scanner.nextLine().trim();
 
-        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByMakeModel(make, model);
-
-        //display vehicles filtered by make/model
         if(make.isEmpty() && model.isEmpty()) {
             System.out.println("❌ Oops! You left both the make and model blank. 🛠️ Please enter at least one to filter vehicles.");
+            return;
         }
-        else if (!make.isEmpty() && model.isEmpty()) {
-            System.out.println("\n🔍 Displaying Filtered Make Range");
-            if(filteredVehicles.isEmpty()) {
-                System.out.println("❌ Sorry no vehicle of your search");
-            }
-            else {
-                displayVehicles(filteredVehicles);
-            }
+
+
+//        List<Vehicle> filteredVehicles = dealership.getVehiclesByMakeModel(make, model);
+        List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByMakeModel(make, model);
+
+        //display vehicles filtered by make/model
+        if (filteredVehicles.isEmpty()) {
+            System.out.println("❌ Sorry, no vehicles matched your search.");
+        } else {
+            System.out.println("\n🔍 Displaying Filtered Vehicles:");
+            displayVehicles(filteredVehicles);
         }
-        else if (make.isEmpty() && !model.isEmpty()) {
-            System.out.println("\n🔍 Displaying Filtered Model Range");
-            if(filteredVehicles.isEmpty()) {
-                System.out.println("❌ Sorry no vehicle of your search");
-            }
-            else {
-                displayVehicles(filteredVehicles);
-            }
-        }
-        else {
-            System.out.println("\n🔍 Displaying Filtered Make & Model Range");
-            if(filteredVehicles.isEmpty()) {
-                System.out.println("❌ Sorry no vehicle of your search");
-            }
-            else {
-                displayVehicles(filteredVehicles);
-            }
-        }
+
+//        if (!make.isEmpty() && model.isEmpty()) {
+//            System.out.println("\n🔍 Displaying Filtered Make Range");
+//            if(filteredVehicles.isEmpty()) {
+//                System.out.println("❌ Sorry no vehicle of your search");
+//            }
+//            else {
+//                displayVehicles(filteredVehicles);
+//            }
+//        }
+//        else if (make.isEmpty() && !model.isEmpty()) {
+//            System.out.println("\n🔍 Displaying Filtered Model Range");
+//            if(filteredVehicles.isEmpty()) {
+//                System.out.println("❌ Sorry no vehicle of your search");
+//            }
+//            else {
+//                displayVehicles(filteredVehicles);
+//            }
+//        }
+//        else {
+//            System.out.println("\n🔍 Displaying Filtered Make & Model Range");
+//            if(filteredVehicles.isEmpty()) {
+//                System.out.println("❌ Sorry no vehicle of your search");
+//            }
+//            else {
+//                displayVehicles(filteredVehicles);
+//            }
+//        }
 
     }
 
@@ -182,11 +193,13 @@ public class UserInterface {
 
         //ask user for year range to filter
         System.out.print("👉 Enter Minimum Year: ");
-        double minYear = checkDoubleInput();
+        int minYear = checkIntInput();
         System.out.print("👉 Enter Maximum Year: ");
-        double maxYear = checkDoubleInput();
+        int maxYear = checkIntInput();
 
-        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByYear(minYear, maxYear);
+//        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByYear(minYear, maxYear);
+        List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByYear(minYear, maxYear);
+
 
         //display vehicles filtered by year range
         if(filteredVehicles.isEmpty()) {

@@ -52,6 +52,84 @@ public class VehiclesDAO {
         return filteredVehicles;
     }
 
+    //filter by make & model
+    public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
+        List<Vehicle> filteredVehicles = new ArrayList<>();
+
+        //directly return if both r empty
+//        if((make == null || make.isEmpty()) && (model == null || model.isEmpty())) {
+//            return  vehicles;
+//        }
+
+        StringBuilder querySb = new StringBuilder("SELECT * FROM vehicles WHERE ");
+        boolean hasPrevious = false;
+
+        if (make != null && !make.isEmpty()) {
+            querySb.append("Make LIKE ?");
+            hasPrevious = true;
+        }
+        if (model != null && !model.isEmpty()) {
+            if(hasPrevious) {
+                querySb.append(" AND ");
+            }
+            querySb.append("Model LIKE ?");
+        }
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(querySb.toString())
+        ) {
+            int paramIndex = 1;
+            if (make != null && !make.isEmpty()) {
+                preparedStatement.setString(paramIndex++, "%" + make + "%");
+            }
+            if (model != null && !model.isEmpty()) {
+                preparedStatement.setString(paramIndex++, "%" + model + "%");
+            }
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery()
+                )
+            {
+                while (resultSet.next()) {
+                    filteredVehicles.add(vehicleParser(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return filteredVehicles;
+    }
+
+    //filter by year
+    public List<Vehicle> getVehiclesByYear(int min, int max) {
+        List<Vehicle> filteredVehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE Year BETWEEN ? AND ?;";
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, min);
+            preparedStatement.setInt(2, max);
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery()
+                )
+            {
+                while (resultSet.next()) {
+                    filteredVehicles.add(vehicleParser(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return filteredVehicles;
+    }
+
+
     //CRUD methods
     public List<Vehicle> getAll() {
         List<Vehicle> vehicles = new ArrayList<>();

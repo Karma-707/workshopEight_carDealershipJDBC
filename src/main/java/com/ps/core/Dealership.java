@@ -123,9 +123,9 @@ public class Dealership {
         ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
 
         for(Vehicle vehicle: inventory) {
-            int vehicleVin = vehicle.getVin();
+            String vehicleVin = vehicle.getVin();
             //add vehicle if within range
-            if( vehicleVin == vin) {
+            if( vehicleVin.equals(vin)) {
                 return vehicle;
             }
         }
