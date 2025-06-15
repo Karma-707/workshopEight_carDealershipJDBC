@@ -286,7 +286,8 @@ public class UserInterface {
 
     //print all vehicles
     private void processGetAllVehiclesRequest() {
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
+//        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
+        List<Vehicle> vehicles = vehiclesDAO.getAll();
         System.out.println("\n📋 Displaying All Vehicles");
         displayVehicles(vehicles);
     }
