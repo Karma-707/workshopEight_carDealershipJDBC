@@ -266,13 +266,13 @@ public class UserInterface {
         System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         System.out.println("🚘 Vehicle Type Request Filter");
         System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-//        scanner.nextLine(); //eat white space
 
         //ask user for vehicle type to filter
         System.out.print("👉 Enter Vehicle Type: ");
         String vehicleType = checkStringInput();
 
-        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByType(vehicleType);
+//        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByType(vehicleType);
+        List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByType(vehicleType);
 
         //display vehicles filtered by type
         if(filteredVehicles.isEmpty()) {
