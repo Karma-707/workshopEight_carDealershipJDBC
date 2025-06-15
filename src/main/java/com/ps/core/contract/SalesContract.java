@@ -3,14 +3,20 @@ package com.ps.core.contract;
 import com.ps.core.Vehicle;
 
 public class SalesContract extends Contract {
+    private int salesContractId; //using from DB
+    private double salePrice; // From vehicle.getPrice()
+
     private double salesTax;
     private double recordingFee;
     private double processingFee;
     private boolean isFinanced;
 
+
     //constructor
     public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen, boolean isFinanced) {
         super(date, customerName, customerEmail, vehicleChosen);
+        this.salePrice = vehicleChosen.getPrice();
+
         this.salesTax = 0.05;
         this.recordingFee = 100;
 
@@ -24,6 +30,17 @@ public class SalesContract extends Contract {
         this.isFinanced = isFinanced;
     }
 
+    // Overloaded constructor for loading from DB
+    public SalesContract(int salesContractId, String date, String customerName, String customerEmail,
+                         Vehicle vehicleChosen, double salePrice, double recordingFee, double processingFee, boolean isFinanced) {
+        super(date, customerName, customerEmail, vehicleChosen);
+        this.salesContractId = salesContractId;
+
+        this.salePrice = salePrice;
+        this.recordingFee = recordingFee;
+        this.processingFee = processingFee;
+        this.isFinanced = isFinanced;
+    }
 
     //get total price
     @Override
@@ -71,34 +88,49 @@ public class SalesContract extends Contract {
 
 
 
-    //getters
+    //getters & setters
+    public int getSalesContractId() {
+        return salesContractId;
+    }
+
+    public void setSalesContractId(int salesContractId) {
+        this.salesContractId = salesContractId;
+    }
+
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = salePrice;
+    }
+
     public double getSalesTax() {
         return salesTax;
+    }
+
+    public void setSalesTax(double salesTax) {
+        this.salesTax = salesTax;
     }
 
     public double getRecordingFee() {
         return recordingFee;
     }
 
+    public void setRecordingFee(double recordingFee) {
+        this.recordingFee = recordingFee;
+    }
+
     public double getProcessingFee() {
         return processingFee;
     }
 
+    public void setProcessingFee(double processingFee) {
+        this.processingFee = processingFee;
+    }
+
     public boolean isFinanced() {
         return isFinanced;
-    }
-
-    //setters
-    public void setSalesTax(double salesTax) {
-        this.salesTax = salesTax;
-    }
-
-    public void setRecordingFee(int recordingFee) {
-        this.recordingFee = recordingFee;
-    }
-
-    public void setProcessingFee(int processingFee) {
-        this.processingFee = processingFee;
     }
 
     public void setFinanced(boolean financed) {
