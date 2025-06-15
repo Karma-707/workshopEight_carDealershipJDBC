@@ -1,7 +1,5 @@
 package com.ps.core;
 
-import com.ps.ContractFileManager;
-import com.ps.DealershipFileManager;
 import com.ps.core.contract.Contract;
 import com.ps.core.contract.LeaseContract;
 import com.ps.core.contract.SalesContract;
@@ -16,7 +14,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,7 +30,6 @@ public class UserInterface {
     //using dataSource grab all to DAOs
     private void init() {
         //load dealership details
-//        this.dealership = DealershipFileManager.getDealership();
         this.dealershipDAO = new DealershipDAO(dataSource);
         this.inventoryDAO = new InventoryDAO(dataSource);
         this.leaseContractDAO = new LeaseContractDAO(dataSource);
@@ -115,7 +111,6 @@ public class UserInterface {
         System.out.print("👉 Enter Maximum Price: ");
         double maxPrice = checkDoubleInput();
 
-//        List<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(minPrice, maxPrice);
         List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByPrice(minPrice, maxPrice);
 
         //display vehicles filtered by price
@@ -145,8 +140,6 @@ public class UserInterface {
             return;
         }
 
-
-//        List<Vehicle> filteredVehicles = dealership.getVehiclesByMakeModel(make, model);
         List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByMakeModel(make, model);
 
         //display vehicles filtered by make/model
@@ -156,35 +149,6 @@ public class UserInterface {
             System.out.println("\n🔍 Displaying Filtered Vehicles:");
             displayVehicles(filteredVehicles);
         }
-
-//        if (!make.isEmpty() && model.isEmpty()) {
-//            System.out.println("\n🔍 Displaying Filtered Make Range");
-//            if(filteredVehicles.isEmpty()) {
-//                System.out.println("❌ Sorry no vehicle of your search");
-//            }
-//            else {
-//                displayVehicles(filteredVehicles);
-//            }
-//        }
-//        else if (make.isEmpty() && !model.isEmpty()) {
-//            System.out.println("\n🔍 Displaying Filtered Model Range");
-//            if(filteredVehicles.isEmpty()) {
-//                System.out.println("❌ Sorry no vehicle of your search");
-//            }
-//            else {
-//                displayVehicles(filteredVehicles);
-//            }
-//        }
-//        else {
-//            System.out.println("\n🔍 Displaying Filtered Make & Model Range");
-//            if(filteredVehicles.isEmpty()) {
-//                System.out.println("❌ Sorry no vehicle of your search");
-//            }
-//            else {
-//                displayVehicles(filteredVehicles);
-//            }
-//        }
-
     }
 
     //print year by user request
@@ -199,9 +163,7 @@ public class UserInterface {
         System.out.print("👉 Enter Maximum Year: ");
         int maxYear = checkIntInput();
 
-//        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByYear(minYear, maxYear);
         List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByYear(minYear, maxYear);
-
 
         //display vehicles filtered by year range
         if(filteredVehicles.isEmpty()) {
@@ -223,9 +185,7 @@ public class UserInterface {
         System.out.print("👉 Enter Color: ");
         String color = checkStringInput();
 
-//        List<Vehicle> filteredVehicles = dealership.getVehiclesByColor(color);
         List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByColor(color);
-
 
         //display vehicles filtered by color
         if(filteredVehicles.isEmpty()) {
@@ -249,9 +209,7 @@ public class UserInterface {
         System.out.print("👉 Enter Maximum Mileage: ");
         double maxMileage = checkDoubleInput();
 
-//        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByMileage(minMileage, maxMileage);
         List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByMileage(minMileage, maxMileage);
-
 
         //display vehicles filtered by mileage range
         if(filteredVehicles.isEmpty()) {
@@ -273,7 +231,6 @@ public class UserInterface {
         System.out.print("👉 Enter Vehicle Type: ");
         String vehicleType = checkStringInput();
 
-//        ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByType(vehicleType);
         List<Vehicle> filteredVehicles = vehiclesDAO.getVehiclesByType(vehicleType);
 
         //display vehicles filtered by type
@@ -288,7 +245,6 @@ public class UserInterface {
 
     //print all vehicles
     private void processGetAllVehiclesRequest() {
-//        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         List<Vehicle> vehicles = vehiclesDAO.getAll();
         System.out.println("\n📋 Displaying All Vehicles");
         displayVehicles(vehicles);
@@ -324,8 +280,6 @@ public class UserInterface {
         double price = checkDoubleInput();
 
         Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price, false);
-//        dealership.addVehicle(newVehicle);
-//        DealershipFileManager.saveDealership(dealership);
 
         vehiclesDAO.create(newVehicle);
 //        System.out.println("✅ Vehicle added successfully!");
@@ -342,26 +296,16 @@ public class UserInterface {
 //        List<Vehicle> vehicles = dealership.getAllVehicles();
         Vehicle vehicleToRemove = vehiclesDAO.getByVin(vin);
 
-        //find vehicle using VIN
-//        for(Vehicle vehicle: vehicles) {
-//            if(vehicle.getVin().equals(vin)) {
-//                vehicleToRemove = vehicle;
-//                break;
-//            }
-//        }
-
         //check if there is such vehicle and display results
         if(vehicleToRemove == null) {
             System.out.println("📭 No vehicles found with that VIN");
         }
         else {
-//            dealership.removeVehicle(vehicleToRemove);
-//            DealershipFileManager.saveDealership(dealership);
 //            vehiclesDAO.delete(vin);
             try {
                 vehiclesDAO.markAsSold(vin);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                writeErrorsToLogsFile(e);
             }
 //            System.out.println("✅ Vehicle removed successfully!");
         }
@@ -413,7 +357,6 @@ public class UserInterface {
         System.out.print("👉 Enter VIN: ");
         String vin = checkStringInput();
 
-//        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
         Vehicle foundVehicle = vehiclesDAO.getByVin(vin);
 
         //display vehicles filtered by vin
@@ -435,24 +378,19 @@ public class UserInterface {
         String formattedDate = currentDate.format(formatter);
 
         //create sales contract
-//        SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
         SalesContract salesContract = new SalesContract(currentDate, customerName, customerEmail, foundVehicle, isFinanced);
 
-
         //save to db
-//        ContractFileManager.saveContract(salesContract);
         salesContractDAO.create(salesContract);
 
         //print receipt to user
         printReceipt(salesContract, foundVehicle);
 
         //remove vehicle after purchase
-//        dealership.removeVehicle(foundVehicle);
-//        DealershipFileManager.saveDealership(dealership);
         try {
             vehiclesDAO.markAsSold(vin);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            writeErrorsToLogsFile(e);
         }
         System.out.println("✅ Sales contract completed and vehicle marked as sold in inventory.");
     }
@@ -472,7 +410,6 @@ public class UserInterface {
         System.out.print("👉 Enter VIN: ");
         String vin = checkStringInput();
 
-//        Vehicle foundVehicle = dealership.getVehicleByVin(vin);
         Vehicle foundVehicle = vehiclesDAO.getByVin(vin);
 
         //display vehicles filtered by vin
@@ -499,15 +436,11 @@ public class UserInterface {
         Date sqlLeaseStartDate = Date.valueOf(currentDate);  // currentDate is LocalDate.now()
         Date sqlLeaseEndDate = Date.valueOf(leaseEndDate);
 
-
         //create lease contract
-//        LeaseContract leaseContract = new LeaseContract(formattedDate, customerName, customerEmail, foundVehicle);
         LeaseContract leaseContractToCreate = new LeaseContract(0, customerName, customerEmail, foundVehicle,
                 sqlLeaseStartDate.toLocalDate(), sqlLeaseEndDate.toLocalDate());
 
-
         //save to DB
-//        ContractFileManager.saveContract(leaseContract);
         leaseContractDAO.create(leaseContractToCreate);
 
 
@@ -515,17 +448,14 @@ public class UserInterface {
         printReceipt(leaseContractToCreate, foundVehicle);
 
         //remove vehicle after purchase
-//        dealership.removeVehicle(foundVehicle);
-//        DealershipFileManager.saveDealership(dealership);
         try {
             vehiclesDAO.markAsSold(foundVehicle.getVin());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            writeErrorsToLogsFile(e);
         }
         System.out.println("✅ Lease contract saved and vehicle marked as leased in inventory.");
 
     }
-
 
     //helper method to print vehicles in array list
     private static void displayVehicles(List<Vehicle> vehicles) {
@@ -533,7 +463,6 @@ public class UserInterface {
             System.out.print(vehicle);
         }
     }
-
 
     //print mainMenu
     private static void printMenu() {
@@ -667,8 +596,6 @@ public class UserInterface {
                     leaseContract.getMonthlyPayment()
             );
             System.out.println(firstLine);
-
-
         }
     }
 

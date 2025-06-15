@@ -1,6 +1,7 @@
 package com.ps.dao;
 
 import com.ps.core.Dealership;
+import com.ps.core.UserInterface;
 import com.ps.core.Vehicle;
 
 import javax.sql.DataSource;
@@ -46,7 +47,7 @@ public class VehiclesDAO {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return filteredVehicles;
@@ -55,11 +56,6 @@ public class VehiclesDAO {
     //filter by make & model
     public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
-
-        //directly return if both r empty
-//        if((make == null || make.isEmpty()) && (model == null || model.isEmpty())) {
-//            return  vehicles;
-//        }
 
         StringBuilder querySb = new StringBuilder("SELECT * FROM vehicles WHERE ");
         boolean hasPrevious = false;
@@ -99,7 +95,7 @@ public class VehiclesDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
         return filteredVehicles;
     }
@@ -126,7 +122,7 @@ public class VehiclesDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return filteredVehicles;
@@ -153,7 +149,7 @@ public class VehiclesDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return filteredVehicles;
@@ -181,7 +177,7 @@ public class VehiclesDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return filteredVehicles;
@@ -207,7 +203,7 @@ public class VehiclesDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return filteredVehicles;
@@ -250,7 +246,7 @@ public class VehiclesDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
         return vehicles;
     }
@@ -273,11 +269,11 @@ public class VehiclesDAO {
                     return vehicleParser(resultSet);
                 }
                 else {
-                    System.out.println("No vehicle found");
+                    System.out.println("📭 No vehicle found");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return null;
@@ -307,11 +303,11 @@ public class VehiclesDAO {
                 System.out.println("✅ Vehicle successfully created!");
             }
             else {
-                System.out.println("Vehicle creation failed!");
+                System.out.println("🚫 Vehicle creation failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -336,10 +332,10 @@ public class VehiclesDAO {
             int rows = preparedStatement.executeUpdate();
 
             if (rows == 1) {
-                System.out.println("Vehicle successfully updated!");
+                System.out.println("✅ Vehicle successfully updated!");
             }
             else {
-                System.out.println("Vehicle update failed!");
+                System.out.println("🚫 Vehicle update failed!");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -362,11 +358,11 @@ public class VehiclesDAO {
                 System.out.println("✅ Vehicle successfully deleted!");
             }
             else {
-                System.out.println("Vehicle deletion failed!");
+                System.out.println("🚫 Vehicle deletion failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
     }

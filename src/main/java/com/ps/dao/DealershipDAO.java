@@ -1,6 +1,7 @@
 package com.ps.dao;
 
 import com.ps.core.Dealership;
+import com.ps.core.UserInterface;
 import com.ps.core.Vehicle;
 
 import javax.imageio.plugins.jpeg.JPEGImageReadParam;
@@ -23,11 +24,6 @@ public class DealershipDAO {
         this.dataSource = dataSource;
     }
 
-
-
-
-
-
     //CRUD methods
     public List<Dealership> getAll() {
         List<Dealership> dealerships = new ArrayList<>();
@@ -47,11 +43,11 @@ public class DealershipDAO {
                 } while(resultSet.next());
             }
             else {
-                System.out.println("No dealerships found");
+                System.out.println("🏢 No dealerships found");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
         return dealerships;
     }
@@ -74,11 +70,11 @@ public class DealershipDAO {
                     return dealershipParser(resultSet);
                 }
                 else {
-                    System.out.println("No dealership found");
+                    System.out.println("🏢 No dealerships found");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return null;
@@ -99,21 +95,21 @@ public class DealershipDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Dealership successfully created!");
+                System.out.println("✅ Dealership successfully created!");
             }
             else {
-                System.out.println("Dealership creation failed!");
+                System.out.println("🚫 Dealership creation failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
     public void update(int id, Dealership dealership) {
         String query = "UPDATE dealerships SET Name = ?, Address = ?, Phone = ? WHERE DealershipID = ?;";
 
-        /* for only for ceratin values changed not all of it
+        /* for only for certain values changed not all of it
         if(!dealership.getName().isEmpty() || dealership.getName() == null) {
             query += " name = ?";
 
@@ -135,13 +131,13 @@ public class DealershipDAO {
             int rows = preparedStatement.executeUpdate();
 
             if (rows == 1) {
-                System.out.println("Dealership successfully updated!");
+                System.out.println("✅ Dealership successfully updated!");
             }
             else {
-                System.out.println("Dealership update failed!");
+                System.out.println("🚫 Dealership update failed!");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -158,14 +154,14 @@ public class DealershipDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Dealership successfully deleted!");
+                System.out.println("✅ Dealership successfully deleted!");
             }
             else {
-                System.out.println("Dealership deletion failed!");
+                System.out.println("🚫 Dealership deletion failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
     }

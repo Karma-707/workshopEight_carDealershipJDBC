@@ -128,10 +128,8 @@ Leasing Vehicle
 | `UserInterface.java`         | Handles the main user interface for the dealership system.                        | - Displays menu with options to filter by price, make/model, year, color, mileage, vehicle type.<br>- Allows users to add or remove vehicles.<br>- Handles input validation for user commands. |
 | `Dealership.java`            | Represents the dealership and its inventory of vehicles.                          | - Stores a list of `Vehicle` objects.<br>- Provides methods for filtering vehicles by attributes.<br>- Methods for adding, removing, and retrieving vehicles.                                  |
 | `Vehicle.java`               | Represents a single vehicle in the dealership's inventory.                        | - Stores vehicle details (VIN, year, make, model, etc.).<br>- Contains a `toString` method to display vehicle details.                                                                         |
-| `DealershipFileManager.java` | Manages loading and saving the dealership's vehicle inventory from/to a CSV file. | - Loads vehicles from a CSV file.<br>- Saves inventory to CSV after updates.<br>- Ensures data persistence.                                                                                    |
 | `exceptions.log`             | A log file to track any errors or exceptions that occur during program execution. | - Timestamps errors.<br>- Logs exception messages to help diagnose issues.                                                                                                                     |
 | `Contract.java`              | Abstract base class representing a sales or lease contract.                       | - Defines shared contract fields like customer name, date, and vehicle.<br>- Provides common functionality for child contract types.                                                           |
-| `ContractFileManager.java`   | Handles reading and writing contract data to a persistent storage file.           | - Saves contract details to a CSV file (e.g., `contracts.csv`).<br>- Supports both sales and lease contract serialization.                                                                     |
 | `LeaseContract.java`         | Represents a lease agreement for a vehicle.                                       | - Calculates expected monthly payments.<br>- Includes lease-specific fields such as lease term and rate.                                                                                       |
 | `SalesContract.java`         | Represents a finalized contract for a vehicle purchase.                           | - Calculates total cost including fees and sales tax.<br>- Stores details like finance option and down payment.                                                                                |
 | `VehiclesDAO.java`           | Handles all vehicle database interactions.                                        | - CRUD operations for vehicles.<br>- Includes filters by price, make, model, year, etc.<br>- Marks vehicles as sold rather than deleting.                                                      |
@@ -142,9 +140,9 @@ Leasing Vehicle
 
 ## 🧪 Experimental / Unused Classes
 
-| **File Name**     | **Purpose**                                                                | **Status**              |
-|------------------|-----------------------------------------------------------------------------|-------------------------|
-| `InventoryDAO.java` | Intended as an abstraction layer over `VehiclesDAO`. May be used later.  | Unused / For future use |
+| **File Name**       | **Purpose**                                                             | **Status**              |
+|---------------------|-------------------------------------------------------------------------|-------------------------|
+| `InventoryDAO.java` | Intended as an abstraction layer over `VehiclesDAO`. May be used later. | Unused / For future use |
 
 ---
 

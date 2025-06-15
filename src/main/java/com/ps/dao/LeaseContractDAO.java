@@ -1,5 +1,6 @@
 package com.ps.dao;
 
+import com.ps.core.UserInterface;
 import com.ps.core.Vehicle;
 import com.ps.core.contract.LeaseContract;
 
@@ -39,11 +40,11 @@ public class LeaseContractDAO {
                 } while(resultSet.next());
             }
             else {
-                System.out.println("No lease contract found  ");
+                System.out.println("📭 No lease contract found");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
         return leaseContracts;
     }
@@ -67,11 +68,11 @@ public class LeaseContractDAO {
                     return leaseContractParser(resultSet);
                 }
                 else {
-                    System.out.println("No lease contract found");
+                    System.out.println("📭 No lease contract found");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return null;
@@ -99,14 +100,14 @@ public class LeaseContractDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Lease contract successfully created!");
+                System.out.println("✅ Lease contract successfully created!");
             }
             else {
-                System.out.println("Lease contract creation failed!");
+                System.out.println("🚫 Lease contract creation failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -132,13 +133,13 @@ public class LeaseContractDAO {
             int rows = preparedStatement.executeUpdate();
 
             if (rows == 1) {
-                System.out.println("Lease contract successfully updated!");
+                System.out.println("✅ Lease contract successfully updated!");
             }
             else {
-                System.out.println("Lease contract update failed!");
+                System.out.println("🚫 Lease contract update failed!");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -155,14 +156,14 @@ public class LeaseContractDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Lease contract successfully deleted!");
+                System.out.println("✅ Lease contract successfully deleted!");
             }
             else {
-                System.out.println("Lease contract deletion failed!");
+                System.out.println("🚫 Lease contract deletion failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
     }

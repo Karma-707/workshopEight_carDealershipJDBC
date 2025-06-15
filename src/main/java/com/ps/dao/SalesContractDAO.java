@@ -1,5 +1,6 @@
 package com.ps.dao;
 
+import com.ps.core.UserInterface;
 import com.ps.core.Vehicle;
 import com.ps.core.contract.LeaseContract;
 import com.ps.core.contract.SalesContract;
@@ -40,11 +41,11 @@ public class SalesContractDAO {
                 } while(resultSet.next());
             }
             else {
-                System.out.println("No sales contract found  ");
+                System.out.println("📭 No sales contract found");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
         return salesContracts;
     }
@@ -68,11 +69,11 @@ public class SalesContractDAO {
                     return salesContractParser(resultSet);
                 }
                 else {
-                    System.out.println("No sales contract found");
+                    System.out.println("📭 No sales contract found");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return null;
@@ -99,14 +100,14 @@ public class SalesContractDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Sale contract successfully created!");
+                System.out.println("✅ Sale contract successfully created!");
             }
             else {
-                System.out.println("Sale contract creation failed!");
+                System.out.println("🚫 Sale contract creation failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -132,13 +133,13 @@ public class SalesContractDAO {
             int rows = preparedStatement.executeUpdate();
 
             if (rows == 1) {
-                System.out.println("Sale contract successfully updated!");
+                System.out.println("✅ Sale contract successfully updated!");
             }
             else {
-                System.out.println("Sale contract update failed!");
+                System.out.println("🚫 Sale contract update failed!");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -155,14 +156,14 @@ public class SalesContractDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Sale contract successfully deleted!");
+                System.out.println("✅ Sale contract successfully deleted!");
             }
             else {
-                System.out.println("Sale contract deletion failed!");
+                System.out.println("🚫 Sale contract deletion failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
     }

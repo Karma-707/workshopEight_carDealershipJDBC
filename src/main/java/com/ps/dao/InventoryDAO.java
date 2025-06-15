@@ -1,5 +1,6 @@
 package com.ps.dao;
 
+import com.ps.core.UserInterface;
 import com.ps.core.Vehicle;
 
 import javax.sql.DataSource;
@@ -45,14 +46,13 @@ public class InventoryDAO {
                         vins.add(resultSet.getString("Vin"));
                     } while(resultSet.next());
                     return vins;
-//                    return vehicleParser(resultSet);
                 }
                 else {
-                    System.out.println("No vehicle found");
+                    System.out.println("📭 No vehicle found");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
         return null;
@@ -73,14 +73,14 @@ public class InventoryDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Inventory successfully created!");
+                System.out.println("✅ Inventory successfully created!");
             }
             else {
-                System.out.println("Inventory creation failed!");
+                System.out.println("🚫 Inventory creation failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
     }
 
@@ -99,31 +99,16 @@ public class InventoryDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Inventory successfully deleted!");
+                System.out.println("✅ Inventory successfully deleted!");
             }
             else {
-                System.out.println("Inventory deletion failed!");
+                System.out.println("🚫 Inventory deletion failed!");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            UserInterface.writeErrorsToLogsFile(e);
         }
 
     }
-
-    private Vehicle vehicleParser(ResultSet resultSet) throws SQLException {
-        String vehicleId = resultSet.getString("Vin");
-        int year = resultSet.getInt("Year");
-        String make = resultSet.getString("Make");
-        String model = resultSet.getString("Model");
-        String vehicleType = resultSet.getString("VehicleType");
-        String color = resultSet.getString("Color");
-        int odometer = resultSet.getInt("Odometer");
-        double price = resultSet.getDouble("Price");
-        boolean isSold = resultSet.getBoolean("Sold");
-
-        return new Vehicle(vehicleId, year, make, model, vehicleType, color, odometer, price, isSold);
-    }
-
 
 }
