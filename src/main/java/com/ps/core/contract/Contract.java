@@ -2,14 +2,16 @@ package com.ps.core.contract;
 
 import com.ps.core.Vehicle;
 
+import java.time.LocalDate;
+
 public abstract class Contract {
-    private String date;
+    private LocalDate date;
     private String customerName;
     private String customerEmail;
     private Vehicle vehicleChosen;
 
     //constructor
-    public Contract(String date, String customerName, String customerEmail, Vehicle vehicleChosen) {
+    public Contract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleChosen) {
         this.date = date;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -34,42 +36,43 @@ public abstract class Contract {
         return monthlyPayment;
     }
 
-    //getters
-    public String getDate() {
+
+    //abstract methods
+    public abstract double getTotalPrice();
+
+    public abstract double getMonthlyPayment();
+
+
+    //getters & setters
+    public LocalDate getDate() {
         return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getCustomerName() {
         return customerName;
     }
 
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public Vehicle getVehicleChosen() {
-        return vehicleChosen;
-    }
-
-    public abstract double getTotalPrice();
-
-    public abstract double getMonthlyPayment();
-
-    //setters
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
 
+    public Vehicle getVehicleChosen() {
+        return vehicleChosen;
+    }
+
     public void setVehicleChosen(Vehicle vehicleChosen) {
         this.vehicleChosen = vehicleChosen;
     }
-
 }

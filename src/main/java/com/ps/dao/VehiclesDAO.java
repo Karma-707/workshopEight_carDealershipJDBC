@@ -27,7 +27,7 @@ public class VehiclesDAO {
     public List<Vehicle> getVehiclesByPrice(double min, double max) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
 
-        String query = "SELECT * FROM vehicles WHERE Price BETWEEN ? AND ?;";
+        String query = "SELECT * FROM vehicles WHERE Price BETWEEN ? AND ? AND Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -75,6 +75,9 @@ public class VehiclesDAO {
             querySb.append("Model LIKE ?");
         }
 
+        querySb.append(" AND Sold = 0");
+
+
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(querySb.toString())
@@ -105,7 +108,7 @@ public class VehiclesDAO {
     public List<Vehicle> getVehiclesByYear(int min, int max) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
 
-        String query = "SELECT * FROM vehicles WHERE Year BETWEEN ? AND ?;";
+        String query = "SELECT * FROM vehicles WHERE Year BETWEEN ? AND ? AND Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -133,7 +136,7 @@ public class VehiclesDAO {
     public List<Vehicle> getVehiclesByColor(String color) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
 
-        String query = "SELECT * FROM vehicles WHERE Color LIKE ?;";
+        String query = "SELECT * FROM vehicles WHERE Color LIKE ? AND Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -160,7 +163,7 @@ public class VehiclesDAO {
     public List<Vehicle> getVehiclesByMileage(double min, double max) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
 
-        String query = "SELECT * FROM vehicles WHERE Odometer BETWEEN ? AND ?;";
+        String query = "SELECT * FROM vehicles WHERE Odometer BETWEEN ? AND ? AND Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -187,7 +190,7 @@ public class VehiclesDAO {
     //filter by vehicle type
     public List<Vehicle> getVehiclesByType(String vehicleType) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
-        String query = "SELECT * FROM vehicles WHERE VehicleType LIKE ?;";
+        String query = "SELECT * FROM vehicles WHERE VehicleType LIKE ? AND Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -210,12 +213,25 @@ public class VehiclesDAO {
         return filteredVehicles;
     }
 
+    //mark vehicle as sold
+    public boolean markAsSold(String vin) throws SQLException {
+        String query = "UPDATE vehicles SET Sold = TRUE WHERE Vin = ?";
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, vin);
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        }
+    }
+
 
     //CRUD methods
     public List<Vehicle> getAll() {
         List<Vehicle> vehicles = new ArrayList<>();
 
-        String query = "SELECT * FROM vehicles;";
+        String query = "SELECT * FROM vehicles WHERE Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -240,7 +256,7 @@ public class VehiclesDAO {
     }
 
     public Vehicle getByVin(String vin) {
-        String query = "SELECT * FROM vehicles WHERE Vin = ?;";
+        String query = "SELECT * FROM vehicles WHERE Vin = ? AND Sold = 0;";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -268,26 +284,27 @@ public class VehiclesDAO {
     }
 
     public void create(Vehicle vehicle) {
-        String query = "INSERT INTO vehicles(Year, Make, Model, VehicleType, Color, Odometer, Price, Sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO vehicles(Vin, Year, Make, Model, VehicleType, Color, Odometer, Price, Sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
         )
         {
-            preparedStatement.setInt(1, vehicle.getYear());
-            preparedStatement.setString(2, vehicle.getMake());
-            preparedStatement.setString(3, vehicle.getModel());
-            preparedStatement.setString(4, vehicle.getVehicleType());
-            preparedStatement.setString(5, vehicle.getColor());
-            preparedStatement.setInt(6, vehicle.getOdometer());
-            preparedStatement.setDouble(7, vehicle.getPrice());
-            preparedStatement.setBoolean(8, vehicle.isSold());
+            preparedStatement.setString(1, vehicle.getVin());
+            preparedStatement.setInt(2, vehicle.getYear());
+            preparedStatement.setString(3, vehicle.getMake());
+            preparedStatement.setString(4, vehicle.getModel());
+            preparedStatement.setString(5, vehicle.getVehicleType());
+            preparedStatement.setString(6, vehicle.getColor());
+            preparedStatement.setInt(7, vehicle.getOdometer());
+            preparedStatement.setDouble(8, vehicle.getPrice());
+            preparedStatement.setBoolean(9, vehicle.isSold());
 
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Vehicle successfully created!");
+                System.out.println("✅ Vehicle successfully created!");
             }
             else {
                 System.out.println("Vehicle creation failed!");
@@ -342,7 +359,7 @@ public class VehiclesDAO {
             int rows = preparedStatement.executeUpdate();
 
             if(rows == 1) {
-                System.out.println("Vehicle successfully deleted!");
+                System.out.println("✅ Vehicle successfully deleted!");
             }
             else {
                 System.out.println("Vehicle deletion failed!");

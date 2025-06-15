@@ -13,13 +13,13 @@ public class LeaseContract extends Contract {
     private double leaseFee;
 
     //constructor
-    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen) {
+    public LeaseContract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleChosen) {
         super(date, customerName, customerEmail, vehicleChosen);
         this.expectedEndingValue = vehicleChosen.getPrice() * 0.5;
         this.leaseFee = vehicleChosen.getPrice() * 0.07;
     }
 
-    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen,
+    public LeaseContract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleChosen,
                          LocalDate leaseStart, LocalDate leaseEnd) {
         super(date, customerName, customerEmail, vehicleChosen);
         this.leaseStart = leaseStart;
@@ -34,7 +34,7 @@ public class LeaseContract extends Contract {
     public LeaseContract(int leaseContractId, String leaseName, String customerEmail, Vehicle vehicleChosen,
                          LocalDate leaseStart, LocalDate leaseEnd, double expectedEndingValue,
                          double leaseFee, double monthlyPayment) {
-        super(leaseStart.toString(), leaseName, customerEmail, vehicleChosen);  // date = leaseStart as String, customerName = leaseName
+        super(leaseStart, leaseName, customerEmail, vehicleChosen);  // date = leaseStart as String, customerName = leaseName
         this.leaseContractId = leaseContractId;
         this.leaseStart = leaseStart;
         this.leaseEnd = leaseEnd;
@@ -46,7 +46,7 @@ public class LeaseContract extends Contract {
 
     public LeaseContract(int leaseContractId, String customerName, String customerEmail, Vehicle vehicleChosen,
                          LocalDate leaseStart, LocalDate leaseEnd) {
-        super(String.valueOf(leaseStart), customerName, customerEmail, vehicleChosen);
+        super(leaseStart, customerName, customerEmail, vehicleChosen);
         this.leaseStart = leaseStart;
         this.leaseEnd = leaseEnd;
 

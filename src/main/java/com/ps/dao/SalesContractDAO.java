@@ -79,7 +79,7 @@ public class SalesContractDAO {
     }
 
     public void create(SalesContract salesContract) {
-        String query = "INSERT INTO SalesContractID (SalesContractID, Vin, BuyerName, CustomerEmail, SalePrice, SaleDate, RecordingFee, ProcessingFee, IsFinanced) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO salescontracts (SalesContractID, Vin, BuyerName, CustomerEmail, SalePrice, SaleDate, RecordingFee, ProcessingFee, IsFinanced) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         try (
                 Connection connection = dataSource.getConnection();
@@ -191,7 +191,7 @@ public class SalesContractDAO {
         double processingFee = resultSet.getDouble("ProcessingFee");
         boolean isFinanced = resultSet.getBoolean("IsFinanced");
 
-        return new SalesContract(salesContractId, saleDate.toString(), buyerName, customerEmail,
+        return new SalesContract(salesContractId, saleDate, buyerName, customerEmail,
                 vehicle, salePrice, recordingFee, processingFee, isFinanced);
 
     }

@@ -12,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,16 +35,17 @@ public class UserInterface {
         //load dealership details
 //        this.dealership = DealershipFileManager.getDealership();
         this.dealershipDAO = new DealershipDAO(dataSource);
+        this.inventoryDAO = new InventoryDAO(dataSource);
+        this.leaseContractDAO = new LeaseContractDAO(dataSource);
+        this.salesContractDAO = new SalesContractDAO(dataSource);
         this.vehiclesDAO = new VehiclesDAO(dataSource);
-
-        //TODO: add after setting up other DAOs
     }
 
     //Constructor
     public UserInterface(DataSource dataSource) {
-        init();
         //load dataSource to userInterface
         this.dataSource =  dataSource;
+        init();
     }
 
     //Display all
@@ -326,7 +328,7 @@ public class UserInterface {
 //        DealershipFileManager.saveDealership(dealership);
 
         vehiclesDAO.create(newVehicle);
-        System.out.println("✅ Vehicle added successfully!");
+//        System.out.println("✅ Vehicle added successfully!");
     }
 
     //remove vehicles to csv and dealership list
@@ -355,8 +357,13 @@ public class UserInterface {
         else {
 //            dealership.removeVehicle(vehicleToRemove);
 //            DealershipFileManager.saveDealership(dealership);
-            vehiclesDAO.delete(vin);
-            System.out.println("✅ Vehicle removed successfully!");
+//            vehiclesDAO.delete(vin);
+            try {
+                vehiclesDAO.markAsSold(vin);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+//            System.out.println("✅ Vehicle removed successfully!");
         }
     }
 
@@ -429,7 +436,7 @@ public class UserInterface {
 
         //create sales contract
 //        SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
-        SalesContract salesContract = new SalesContract(formattedDate, customerName, customerEmail, foundVehicle, isFinanced);
+        SalesContract salesContract = new SalesContract(currentDate, customerName, customerEmail, foundVehicle, isFinanced);
 
 
         //save to db
@@ -442,8 +449,12 @@ public class UserInterface {
         //remove vehicle after purchase
 //        dealership.removeVehicle(foundVehicle);
 //        DealershipFileManager.saveDealership(dealership);
-        vehiclesDAO.delete(vin);
-        System.out.println("✅ Sales contract completed and vehicle removed from inventory.");
+        try {
+            vehiclesDAO.markAsSold(vin);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("✅ Sales contract completed and vehicle marked as sold in inventory.");
     }
 
     //write up lease contract
@@ -481,14 +492,18 @@ public class UserInterface {
 
         System.out.print("👉 Enter Lease End Date (YYYYMMDD): ");
         String leaseEndInput = checkStringInput();
-        LocalDate leaseEndDate = LocalDate.parse(leaseEndInput);
+        LocalDate leaseEndDate = LocalDate.parse(leaseEndInput, formatter);
         String formattedEndDate = leaseEndDate.format(formatter);
+
+        // convert LocalDate to java.sql.Date for DB usage
+        Date sqlLeaseStartDate = Date.valueOf(currentDate);  // currentDate is LocalDate.now()
+        Date sqlLeaseEndDate = Date.valueOf(leaseEndDate);
 
 
         //create lease contract
 //        LeaseContract leaseContract = new LeaseContract(formattedDate, customerName, customerEmail, foundVehicle);
         LeaseContract leaseContractToCreate = new LeaseContract(0, customerName, customerEmail, foundVehicle,
-                Date.valueOf(formattedStartDate).toLocalDate(), Date.valueOf(formattedEndDate).toLocalDate());
+                sqlLeaseStartDate.toLocalDate(), sqlLeaseEndDate.toLocalDate());
 
 
         //save to DB
@@ -502,8 +517,12 @@ public class UserInterface {
         //remove vehicle after purchase
 //        dealership.removeVehicle(foundVehicle);
 //        DealershipFileManager.saveDealership(dealership);
-        vehiclesDAO.delete(foundVehicle.getVin());
-        System.out.println("✅ Lease contract saved and vehicle removed from inventory.");
+        try {
+            vehiclesDAO.markAsSold(foundVehicle.getVin());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("✅ Lease contract saved and vehicle marked as leased in inventory.");
 
     }
 
@@ -555,7 +574,7 @@ public class UserInterface {
                     "📧 Email:         %s\n\n" +
 
                     "🚗 Vehicle Details:\n" +
-                    "   🔢 VIN:         %d\n" +
+                    "   🔢 VIN:         %s\n" +
                     "   📆 Year:        %d\n" +
                     "   🏷️ Make:        %s\n" +
                     "   🚘 Model:       %s\n" +
@@ -610,7 +629,7 @@ public class UserInterface {
                     "📧 Email:         %s\n\n" +
 
                     "🚗 Vehicle Details:\n" +
-                    "   🔢 VIN:         %d\n" +
+                    "   🔢 VIN:         %s\n" +
                     "   📆 Year:        %d\n" +
                     "   🏷️ Make:        %s\n" +
                     "   🚘 Model:       %s\n" +

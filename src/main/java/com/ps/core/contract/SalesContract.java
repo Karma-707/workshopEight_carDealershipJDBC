@@ -2,6 +2,8 @@ package com.ps.core.contract;
 
 import com.ps.core.Vehicle;
 
+import java.time.LocalDate;
+
 public class SalesContract extends Contract {
     private int salesContractId; //using from DB
     private double salePrice; // From vehicle.getPrice()
@@ -13,7 +15,7 @@ public class SalesContract extends Contract {
 
 
     //constructor
-    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleChosen, boolean isFinanced) {
+    public SalesContract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleChosen, boolean isFinanced) {
         super(date, customerName, customerEmail, vehicleChosen);
         this.salePrice = vehicleChosen.getPrice();
 
@@ -31,7 +33,7 @@ public class SalesContract extends Contract {
     }
 
     // Overloaded constructor for loading from DB
-    public SalesContract(int salesContractId, String date, String customerName, String customerEmail,
+    public SalesContract(int salesContractId, LocalDate date, String customerName, String customerEmail,
                          Vehicle vehicleChosen, double salePrice, double recordingFee, double processingFee, boolean isFinanced) {
         super(date, customerName, customerEmail, vehicleChosen);
         this.salesContractId = salesContractId;
